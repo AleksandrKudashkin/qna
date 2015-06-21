@@ -1,0 +1,10 @@
+= form_for @question do |f|
+  = f.label :title, 'Question Title:'
+  br
+  = f.text_field :title
+  p
+  = f.label :question_body, 'Question itself:'
+  br
+  = f.text_area :question_body
+  p
+  = f.submit
