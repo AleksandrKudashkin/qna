@@ -4,7 +4,7 @@ FactoryGirl.define do
     question_body 'MyQuestionText'
   end
 
-  factory :invalid_question, class: "Question" do
+  factory :invalid_question, class: 'Question' do
     title nil
     question_body nil
   end
