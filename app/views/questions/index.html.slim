@@ -1,5 +1,14 @@
 - @questions.each do |q|
-  h2
+  h3
     = q.title
   p
     = q.question_body
+  p
+    .btn
+      = link_to "Подробнее", question_path(q)
+    .btn
+      = link_to "Помочь человеку", new_question_answer_path(q)
+
+br
+br
+=link_to "Задать свой вопрос", new_question_path

@@ -1,10 +1,14 @@
 = form_for @question do |f|
-  = f.label :title, 'Question Title:'
+  = f.label :title, 'Заголовок:'
   br
   = f.text_field :title
   p
-  = f.label :question_body, 'Question itself:'
+  = f.label :question_body, 'Опишите свой вопрос подробнее:'
   br
-  = f.text_area :question_body
+  = f.text_area :question_body, size: "60x12"
   p
-  = f.submit
+  = f.submit "Задать вопрос!"
+
+br
+br
+=link_to "К списку вопросов", questions_path

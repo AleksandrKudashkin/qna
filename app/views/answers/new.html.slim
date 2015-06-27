@@ -1,6 +1,11 @@
-= form_for @answer do |f|
-  = f.label :answer_body, 'Answer body:'
+h3
+  = @answer.question.title
+p
+  = @answer.question.question_body
+
+= form_for @answer, url: question_answers_path do |f|
+  = f.label :answer_body, 'Ваш ответ'
   br
-  = f.text_area :answer_body
+  = f.text_area :answer_body, size: "60x12"
   p
-  = f.submit
+  = f.submit "Дать ответ!"
