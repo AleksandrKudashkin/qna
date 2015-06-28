@@ -8,7 +8,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @question = Question.find_by_id(params[:id])
+    @question = Question.find(params[:id])
   end
 
   def create
@@ -24,6 +24,6 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :question_body)
+    params.require(:question).permit(:title, :body)
   end
 end

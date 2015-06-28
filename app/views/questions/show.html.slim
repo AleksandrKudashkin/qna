@@ -1,8 +1,8 @@
 h3
   = @question.title
 p  
-  = @question.question_body
-- if @question.answers.size > 0 
+  = @question.body
+- unless @question.answers.empty? 
   br
   br
   h4 Ответы к вопросам:
@@ -10,7 +10,7 @@ p
 p
 - @question.answers.each do |a|
   p
-    = a.answer_body
+    = a.body
 
 br
 br

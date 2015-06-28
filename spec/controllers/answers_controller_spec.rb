@@ -11,10 +11,6 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
-    it 'assigns to answer.question_id correct question_id' do
-      expect(assigns(:answer).question_id).to eq f_question.id
-    end
-
     it 'renders a new template' do
       expect(response).to render_template :new
     end
@@ -23,7 +19,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'with valid object' do
       it 'saves new answer in database' do
-        expect { post :create, answer: attributes_for(:answer), question_id: f_question }.to change(Answer, :count).by(1)
+        expect { post :create, answer: attributes_for(:answer), question_id: f_question }.to change(f_question.answers, :count).by(1)
       end
 
       it 'redirects to show question page' do

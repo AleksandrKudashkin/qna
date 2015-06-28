@@ -1,11 +1,11 @@
 class AnswersController < ApplicationController
+  before_action :find_question, only: [:create, :new]
+
   def new
-    @answer = Answer.new
-    @answer.question_id = params[:question_id]
+    @answer = @question.answers.new
   end
 
   def create
-    @question = Question.find_by_id(params[:question_id])
     @answer = @question.answers.new(answer_params)
 
     if @answer.save
@@ -17,7 +17,11 @@ class AnswersController < ApplicationController
 
   private
 
+  def find_question
+    @question = Question.find(params[:question_id])
+  end
+
   def answer_params
-    params.require(:answer).permit(:question_id, :answer_body)
+    params.require(:answer).permit(:body)
   end
 end
