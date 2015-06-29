@@ -1,0 +1,20 @@
+h3
+  = @question.title
+p  
+  = @question.body
+- unless @question.answers.empty? 
+  br
+  br
+  h4 Ответы к вопросам:
+
+p
+- @question.answers.each do |a|
+  p
+    = a.body
+
+br
+br
+.btn
+  =link_to "К списку вопросов", questions_path
+.btn
+  = link_to "Помочь человеку", new_question_answer_path(@question)

@@ -19,3 +19,4 @@ doc/
 .idea
 .secret
 .rubocop.yml
+rubocop_pre_commit_hook.rb
