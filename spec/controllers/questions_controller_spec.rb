@@ -4,6 +4,8 @@ RSpec.describe QuestionsController, type: :controller do
   let(:question_sample) { create(:question) }
 
   describe 'GET #new' do
+    sign_in_user
+
     before { get :new }
 
     it 'assigns a new Question object' do
@@ -42,6 +44,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
+
     context 'with valid object' do
       it 'saves the new question in the database' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)

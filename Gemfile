@@ -17,6 +17,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # Using Slim template
 gem 'slim'
 
+# Using Devise for authorization
+gem 'devise'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -47,6 +50,7 @@ group :development, :test do
   gem 'capybara'
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
+  gem 'launchy'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
   
