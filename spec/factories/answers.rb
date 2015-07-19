@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :answer do
     question nil
-    body 'Read the following manual'
+    sequence(:body) { |n| "Read the following manual#{n}" } 
   end
 
   factory :invalid_answer, class: 'Answer' do
