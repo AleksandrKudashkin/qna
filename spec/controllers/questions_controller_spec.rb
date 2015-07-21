@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question_sample) { create(:question) }
+  let!(:f_user) { create(:user) }
+  before { sign_in(f_user) }
 
   describe 'GET #new' do
-    sign_in_user
-
+  
     before { get :new }
 
     it 'assigns a new Question object' do
@@ -18,7 +18,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #index' do
-    let(:questions_array) { create_list(:question, 3) }
+    let(:questions_array) { create_list(:question, 3, user: f_user) }
 
     before { get :index }
 
@@ -32,10 +32,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before { get :show, id: question_sample }
+    let!(:f_question) { create(:question, user: f_user) }
+    before { get :show, id: f_question }
 
     it 'assigns the requested question to @question' do
-      expect(assigns(:question)).to eq question_sample
+      expect(assigns(:question)).to eq f_question
     end
 
     it 'rendres show view' do
@@ -44,28 +45,40 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    sign_in_user
-
+    
     context 'with valid object' do
       it 'saves the new question in the database' do
-        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect { post :create, question: attributes_for(:question), user_id: f_user }.to change(Question, :count).by(1)
       end
 
       it 'redirects to show this question view' do
-        post :create, question: attributes_for(:question)
+        post :create, question: attributes_for(:question), user_id: f_user
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end
 
     context 'with invalid object' do
       it 'does not save the question' do
-        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+        expect { post :create, question: attributes_for(:invalid_question), user_id: f_user }.to_not change(Question, :count)
       end
 
       it 're-renders template with form for new question' do
-        post :create, question: attributes_for(:invalid_question)
+        post :create, question: attributes_for(:invalid_question), user_id: f_user
         expect(response).to render_template :new
       end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:f_question) { create(:question, user: f_user) }
+    it 'deletes the question of the user' do
+      expect { delete :destroy, id: f_question, user_id: f_user }.to change(Question, :count).by(-1)
+    end
+
+    let!(:f2_user) { create(:user) }
+    let!(:f2_question) { create(:question, user: f2_user) }
+    it 'not deletes the question of the other user' do
+      expect { delete :destroy, id: f2_question, user_id: f2_user }.to_not change(Question, :count)
     end
   end
 end

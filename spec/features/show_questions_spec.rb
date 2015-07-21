@@ -7,7 +7,7 @@ feature 'Show questions index', %q{
 } do
 
   given(:user) { create(:user) }
-  before { 5.times { create(:question) } }
+  before { 5.times { create(:question, user: user) } }
 
   scenario 'Authenticated user views all the questions' do
     sign_in(user)

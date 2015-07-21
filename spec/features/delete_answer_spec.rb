@@ -7,7 +7,7 @@ feature 'Delete answer to a question', %q{
   } do
     
     given(:user) { create(:user) }
-    given(:question) { create(:question) }
+    given(:question) { create(:question, user: user) }
     given!(:answer) { create(:answer, question: question, user: user) }
 
     scenario 'Authenticated user deletes his answer to question' do
@@ -21,7 +21,7 @@ feature 'Delete answer to a question', %q{
       expect(page).to have_content 'Ваш ответ удалён!'
     end
 
-    scenario 'Non-authenticated user tries to create a question' do
+    scenario 'Non-authenticated user tries to delete an answer' do
       visit question_path(question)
 
       expect(page).to_not have_content 'Удалить ответ'

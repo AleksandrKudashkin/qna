@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let!(:f_user) { create(:user) }
-  let!(:f_question) { create(:question) }
+  let!(:f_question) { create(:question, user: f_user) }
   let!(:f_answer) { create(:answer, question: f_question, user: f_user) }
   before { sign_in(f_user) }
 
@@ -48,7 +48,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     let!(:f2_user) { create(:user) }
-    let!(:f2_question) { create(:question) }
+    let!(:f2_question) { create(:question, user: f_user) }
     let!(:f2_answer) { create(:answer, question: f2_question, user: f2_user) }
     it 'not deletes the answer of the other user' do
       expect { delete :destroy, id: f2_answer, question_id: f2_question, user_id: f2_user }.to_not change(f2_question.answers, :count)

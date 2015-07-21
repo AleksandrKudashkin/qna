@@ -2,6 +2,8 @@ h3
   = @question.title
 p  
   = @question.body
+  - if @question.user == current_user
+      = link_to "Удалить вопрос", question_path(@question), method: :delete 
 - unless @question.answers.empty? 
   br
   br
@@ -15,7 +17,7 @@ p
       = link_to "Удалить ответ", question_answer_path(@question, a), method: :delete
 br
 br
-.btn
+.btn.btn-default
   =link_to "К списку вопросов", questions_path
-.btn
+.btn.btn-default
   = link_to "Помочь человеку", new_question_answer_path(@question)

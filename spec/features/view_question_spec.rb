@@ -6,8 +6,8 @@ feature 'View questions and answers', %q{
   I want to be able to view the content of question and answers for it
 } do
 
-  given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given!(:user) { create(:user) }
+  given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
   scenario 'Authenticated user views a question with answers' do
