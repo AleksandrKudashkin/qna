@@ -7,11 +7,24 @@ html
     = csrf_meta_tags
 
   body
-    .container-fluid
-      .col-md-12
-        a href=root_path
+    .navbar.navbar-default
+      .container
+        a.navbar-brand href=root_path
           img src="/assets/logo.jpg"/
-        span StackOverFlow Clone
+        a.navbar-brand href=root_path
+          span StackOverFlow Clone
+        ul.nav.nav-tabs.navbar-right
+          - if user_signed_in?
+            li
+              = link_to "Log out", destroy_user_session_path, :method => :delete 
+          - else
+            li 
+              a href=new_user_session_path
+                'Sign in
+            li 
+              a href=new_user_registration_path
+                'Sign up
+          
 
     .container  
       p.notice
