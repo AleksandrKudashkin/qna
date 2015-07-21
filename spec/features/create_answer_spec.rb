@@ -19,6 +19,7 @@ feature 'Create answer to a question', %q{
       click_on 'Дать ответ!'
 
       expect(current_path).to eq question_path(question)
+      expect(page).to have_content 'Ваш ответ сохранён!'
       expect(page).to have_content 'Read the following manual'
     end
 

@@ -8,7 +8,7 @@ feature 'View questions and answers', %q{
 
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given!(:answer) { create(:answer, question: question) }
+  given!(:answer) { create(:answer, question: question, user: user) }
 
   scenario 'Authenticated user views a question with answers' do
     sign_in(user)

@@ -11,7 +11,8 @@ p
 - @question.answers.each do |a|
   p
     = a.body
-
+    - if a.user == current_user
+      = link_to "Удалить ответ", question_answer_path(@question, a), method: :delete
 br
 br
 .btn
