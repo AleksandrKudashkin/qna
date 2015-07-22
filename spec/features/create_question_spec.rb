@@ -7,17 +7,20 @@ feature 'Create question', %q{
 } do
   
   given!(:user) { create(:user) }
+  given(:question) { create(:question, user: user) }
 
   scenario 'Authenticated user creates a question' do
     sign_in(user)
 
     visit questions_path
     click_on 'Задать свой вопрос'
-    fill_in 'Заголовок:', with: 'Тестовый вопрос'
-    fill_in 'Опишите свой вопрос подробнее:', with: 'Text, Text. Text?'
+    fill_in 'Заголовок:', with: question.title
+    fill_in 'Опишите свой вопрос подробнее:', with: question.body
     click_on 'Задать вопрос!'
 
     expect(page).to have_content 'Ваш вопрос успешно создан!'
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
   end
 
   scenario 'Non-authenticated user tries to create a question' do

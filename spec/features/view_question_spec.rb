@@ -8,18 +8,21 @@ feature 'View questions and answers', %q{
 
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, question: question, user: user) }
+  given!(:answer) { create_list(:answer, 3, question: question, user: user) }
 
   scenario 'Authenticated user views a question with answers' do
     sign_in(user)
 
     visit question_path(question)
 
-    expect(page).to have_content 'MyQuestionText'
-    expect(page).to have_content 'Read the following manual'
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+
+    answer.each { |a| expect(page).to have_content a.body }
+ 
   end
 
-  scenario 'Non-authenticated user views a question with answers' do
+  scenario 'Non-authenticated user views a question with answers' do  
     visit question_path(question)
 
     expect(page).to have_content 'MyQuestionText'

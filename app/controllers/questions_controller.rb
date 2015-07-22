@@ -27,7 +27,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if @question.user == current_user
+    if @question.user_id == current_user.id
       @question.destroy ? flash[:warning] = 'Ваш вопрос удалён!' : flash.now[:danger] = 'Ошибка! Не удалось удалить Ваш вопрос!'
     end
     redirect_to questions_path

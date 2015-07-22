@@ -19,6 +19,7 @@ feature 'Delete answer to a question', %q{
       
       expect(current_path).to eq question_path(question)
       expect(page).to have_content 'Ваш ответ удалён!'
+      expect(page).to_not have_content answer.body
     end
 
     scenario 'Non-authenticated user tries to delete an answer' do

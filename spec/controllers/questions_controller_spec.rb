@@ -48,22 +48,22 @@ RSpec.describe QuestionsController, type: :controller do
     
     context 'with valid object' do
       it 'saves the new question in the database' do
-        expect { post :create, question: attributes_for(:question), user_id: f_user }.to change(Question, :count).by(1)
+        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
 
       it 'redirects to show this question view' do
-        post :create, question: attributes_for(:question), user_id: f_user
+        post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end
 
     context 'with invalid object' do
       it 'does not save the question' do
-        expect { post :create, question: attributes_for(:invalid_question), user_id: f_user }.to_not change(Question, :count)
+        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
       end
 
       it 're-renders template with form for new question' do
-        post :create, question: attributes_for(:invalid_question), user_id: f_user
+        post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
       end
     end
@@ -72,13 +72,13 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'DELETE #destroy' do
     let!(:f_question) { create(:question, user: f_user) }
     it 'deletes the question of the user' do
-      expect { delete :destroy, id: f_question, user_id: f_user }.to change(Question, :count).by(-1)
+      expect { delete :destroy, id: f_question }.to change(Question, :count).by(-1)
     end
 
     let!(:f2_user) { create(:user) }
     let!(:f2_question) { create(:question, user: f2_user) }
     it 'not deletes the question of the other user' do
-      expect { delete :destroy, id: f2_question, user_id: f2_user }.to_not change(Question, :count)
+      expect { delete :destroy, id: f2_question }.to_not change(Question, :count)
     end
   end
 end

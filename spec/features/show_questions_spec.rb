@@ -7,14 +7,18 @@ feature 'Show questions index', %q{
 } do
 
   given(:user) { create(:user) }
-  before { 5.times { create(:question, user: user) } }
+  given!(:f_questions) { create_list(:question, 5, user: user) }
 
   scenario 'Authenticated user views all the questions' do
     sign_in(user)
 
     visit questions_path
 
-    expect(page).to have_content 'MyQuestionText'
+    f_questions.each do |q|
+      expect(page).to have_content q.title
+      expect(page).to have_content q.body
+    end
+    
   end
 
   scenario 'Non-authenticated user views all the questions' do

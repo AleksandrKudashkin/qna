@@ -21,7 +21,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'with valid object' do
       it 'saves new answer in database' do
-        expect { post :create, answer: attributes_for(:answer), question_id: f_question, user_id: f_user }.to change(f_question.answers, :count).by(1)
+        expect { post :create, answer: attributes_for(:answer), question_id: f_question }.to change(f_question.answers, :count).by(1)
       end
 
       it 'redirects to show question page' do
@@ -32,7 +32,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid object' do
       it 'does no save the answer' do
-        expect { post :create, answer: attributes_for(:invalid_answer), question_id: f_question, user_id: f_user }.to_not change(Answer, :count)
+        expect { post :create, answer: attributes_for(:invalid_answer), question_id: f_question }.to_not change(Answer, :count)
       end
 
       it 're-renders a new template' do
@@ -44,14 +44,14 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'DELETE #destroy' do
     it 'deletes the answer of the user' do
-      expect { delete :destroy, id: f_answer, question_id: f_question, user_id: f_user }.to change(f_question.answers, :count).by(-1)
+      expect { delete :destroy, id: f_answer, question_id: f_question }.to change(f_question.answers, :count).by(-1)
     end
 
     let!(:f2_user) { create(:user) }
     let!(:f2_question) { create(:question, user: f_user) }
     let!(:f2_answer) { create(:answer, question: f2_question, user: f2_user) }
     it 'not deletes the answer of the other user' do
-      expect { delete :destroy, id: f2_answer, question_id: f2_question, user_id: f2_user }.to_not change(f2_question.answers, :count)
+      expect { delete :destroy, id: f2_answer, question_id: f2_question }.to_not change(f2_question.answers, :count)
     end
   end
 end
