@@ -1,3 +1,3 @@
-$('.answers').html('<%= j render 'questions/answers' %>');
-$('.flash-notice').html('<%= j render 'notice' %>');
+$('.answers').append('<%= j render 'answer' %>');
+$('.flash-notice').html('<%= j render 'notice' %>').delay(1000).fadeOut(400);;
 $('#answer_body').val('');

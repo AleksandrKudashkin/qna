@@ -10,7 +10,12 @@ p
   h4 Ответы к вопросам:
 
 .answers
-  =render 'answers'
+  hr
+  - @question.answers.each do |a|
+    p
+      = a.body
+      = link_to "Удалить ответ", question_answer_path(@question, a), method: :delete if user_signed_in? && a.user_id == current_user.id
+
 - if user_signed_in?
   hr
   = form_for [@question, @answer], remote: true do |f|
