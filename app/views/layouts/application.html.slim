@@ -27,11 +27,6 @@ html
           
 
     .container  
-      p.notice
-        = notice
-      p.alert
-        = alert
-      - flash.each do |key, value|
-        div class="alert alert-#{key}"
-          = value
+      .flash-notice
+        = render 'notice'
       = yield

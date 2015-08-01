@@ -11,13 +11,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
 
-    if @answer.save
-      flash[:success] = 'Ваш ответ сохранён!'
-      redirect_to @question
-    else
-      flash.now[:danger] = 'Ошибка! Не удалось сохранить Ваш ответ!'
-      render :new
-    end
+    @answer.save ? flash[:success] = 'Ваш ответ сохранён!' : flash.now[:danger] = 'Ошибка! Не удалось сохранить Ваш ответ!'
   end
 
   def destroy

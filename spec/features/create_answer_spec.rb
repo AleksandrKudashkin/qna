@@ -6,15 +6,14 @@ feature 'Create answer to a question', %q{
     I want to be able to create an answer to a question
   } do
     
-    given(:user) { create(:user) }
-    given(:question) { create(:question, user: user) }
+    given!(:user) { create(:user) }
+    given!(:question) { create(:question, user: user) }
 
-    scenario 'Authenticated user creates an answer to question' do
+    scenario 'Authenticated user creates an answer to question', js: true do
       sign_in(user)
 
       visit question_path(question)
 
-      click_on 'Помочь человеку'
       fill_in 'Ваш ответ', with: 'Read the following manual!'
       click_on 'Дать ответ!'
 
@@ -26,8 +25,6 @@ feature 'Create answer to a question', %q{
     scenario 'Non-authenticated user tries to create a question' do
       visit question_path(question)
 
-      click_on 'Помочь человеку'
-
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to_not have_content 'Ваш ответ'
     end
 end

@@ -9,15 +9,18 @@ p
   br
   h4 Ответы к вопросам:
 
-p
-- @question.answers.each do |a|
-  p
-    = a.body
-    = link_to "Удалить ответ", question_answer_path(@question, a), method: :delete if user_signed_in? && a.user_id == current_user.id
-      
+.answers
+  =render 'answers'
+- if user_signed_in?
+  hr
+  = form_for [@question, @answer], remote: true do |f|
+    = f.label :body, 'Ваш ответ'
+    br
+    = f.text_area :body, size: "60x12"
+    p
+    = f.submit "Дать ответ!"
 br
 br
 .btn.btn-default
-  =link_to "К списку вопросов", questions_path
-.btn.btn-default
-  = link_to "Помочь человеку", new_question_answer_path(@question)
+  = link_to "К списку вопросов", questions_path
+ 
