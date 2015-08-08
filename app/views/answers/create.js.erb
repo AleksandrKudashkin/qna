@@ -1,3 +1,12 @@
-$('.answers').append('<%= j render 'answer' %>');
-$('.flash-notice').html('<%= j render 'notice' %>').delay(1000).fadeOut(400);;
-$('#answer_body').val('');
+<% if @answer.errors.present? %>
+  <% @answer.errors.full_messages.each do |msg| %>
+    $('.new_answer').before('<div class="alert alert-danger"><%= j msg %></div>')
+  <% end %>
+<% else %>
+  $('.flash-notice').html('<%= j render 'notice' %>').delay(1000).fadeOut(400);
+  $('.answers').append('<%= j render 'answer' %>');
+  $('#answer_body').val('');
+<% end %> 
+
+
+
