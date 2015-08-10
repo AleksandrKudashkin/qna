@@ -15,7 +15,7 @@ feature 'Create answer to a question', %q{
     visit question_path(question)
 
     fill_in 'Ваш ответ', with: 'Read the following manual!'
-    click_on 'Дать ответ!'
+    click_on 'Сохранить'
 
     expect(current_path).to eq question_path(question)
     expect(page).to have_content 'Ваш ответ сохранён!'
@@ -27,7 +27,7 @@ feature 'Create answer to a question', %q{
 
     visit question_path(question)
 
-    click_on 'Дать ответ!'
+    click_on 'Сохранить'
 
     expect(page).to have_content "Body can't be blank"
   end
@@ -37,6 +37,4 @@ feature 'Create answer to a question', %q{
 
     expect(page).to_not have_content 'Ваш ответ'
   end
-
-
 end

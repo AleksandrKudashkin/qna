@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'feature_helper'
 
 feature 'Show questions index', %q{
   In order to find an interesting question

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'feature_helper'
 
 feature 'View questions and answers', %q{
   In order to get information for my problem

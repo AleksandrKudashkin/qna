@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question, only: [:create, :new, :destroy]  
-  before_action :find_answer, only: [:destroy]
+  before_action :find_question, except: [:index]  
+  before_action :find_answer, only: [:destroy, :update]
 
   def new
     @answer = @question.answers.new
@@ -19,6 +19,10 @@ class AnswersController < ApplicationController
       @answer.destroy ? flash[:warning] = 'Ваш ответ удалён!' : flash.now[:danger] = 'Ошибка! Не удалось удалить Ваш ответ!'
     end
     redirect_to @question
+  end
+
+  def update
+    @answer.update(answer_params)
   end
 
   private
