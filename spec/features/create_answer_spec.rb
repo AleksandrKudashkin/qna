@@ -19,7 +19,11 @@ feature 'Create answer to a question', %q{
 
     expect(current_path).to eq question_path(question)
     expect(page).to have_content 'Ваш ответ сохранён!'
-    expect(page).to have_content 'Read the following manual'
+    expect(page).to have_content 'Read the following manual!'
+    
+    within '.new_answer' do
+      expect(find_field('answer_body').value).to eq ''
+    end
   end
 
   scenario 'Authenticated user tries to create invalid answer', js: true do

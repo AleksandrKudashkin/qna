@@ -39,6 +39,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq f_question
     end
 
+    it 'assigns the answers of question to @answers' do
+      expect(assigns(:answers)).to eq f_question.answers
+    end
+
     it 'creates a new Answer object' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end

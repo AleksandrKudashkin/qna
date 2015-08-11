@@ -11,10 +11,11 @@ p
 
 hr
 .answers
-  = render 'answers'
+  = render @answers
 
 - if user_signed_in?
   hr
+  .new_answer_info
   = form_for [@question, @answer], remote: true do |f|
     = f.label :body, 'Ваш ответ'
     br

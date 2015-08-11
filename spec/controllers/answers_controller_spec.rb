@@ -1,9 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let!(:f_user) { create(:user) }
+  let(:f_user) { create(:user) }
+  let(:f2_user) { create(:user) }
+
   let!(:f_question) { create(:question, user: f_user) }
+
   let!(:f_answer) { create(:answer, question: f_question, user: f_user) }
+  let!(:f2_answer) { create(:answer, question: f_question, user: f2_user) }
+
   before { sign_in(f_user) }
 
   describe 'POST #create' do
@@ -19,7 +24,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid object' do
-      it 'does no save the answer' do
+      it 'does not save the answer' do
         expect { post :create, answer: attributes_for(:invalid_answer), question_id: f_question, format: :js }.to_not change(Answer, :count)
       end
 
@@ -35,11 +40,9 @@ RSpec.describe AnswersController, type: :controller do
       expect { delete :destroy, id: f_answer, question_id: f_question, format: :js }.to change(f_question.answers, :count).by(-1)
     end
 
-    let!(:f2_user) { create(:user) }
-    let!(:f2_question) { create(:question, user: f_user) }
-    let!(:f2_answer) { create(:answer, question: f2_question, user: f2_user) }
+    
     it 'not deletes the answer of the other user' do
-      expect { delete :destroy, id: f2_answer, question_id: f2_question }.to_not change(f2_question.answers, :count)
+      expect { delete :destroy, id: f2_answer, question_id: f_question }.to_not change(f_question.answers, :count)
     end
   end
 
@@ -63,6 +66,12 @@ RSpec.describe AnswersController, type: :controller do
     it 'renders update template' do
       patch :update, id: f_answer, question_id: f_question, answer: attributes_for(:answer), format: :js
       expect(response).to render_template :update
+    end
+
+    it 'not edites the answer of the other user' do
+      patch :update, id: f2_answer, question_id: f_question, answer: { body: 'New body' }, format: :js
+      f2_answer.reload
+      expect(f2_answer.body).to_not eq 'New body'
     end
   end
 end

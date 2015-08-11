@@ -1,11 +1,11 @@
 <% if @answer.errors.present? %>
   <% @answer.errors.full_messages.each do |msg| %>
-    $('.new_answer').before('<div class="alert alert-danger"><%= j msg %></div>')
+    $('.new_answer_info').html('<div class="alert alert-danger"><%= j msg %></div>').delay(1000).fadeOut(400);
   <% end %>
 <% else %>
-  $('.flash-notice').html('<%= j render 'notice' %>').delay(1000).fadeOut(400);
-  $('.answers').append('<%= j render 'answer' %>');
-  $('#answer_body').val('');
+  $('.new_answer_info').html('<%= j render 'notice' %>').delay(1000).fadeOut(400);
+  $('.answers').append('<%= j render @answer %>');
+  $('#new_answer').find('#answer_body').val('');
 <% end %> 
 
 

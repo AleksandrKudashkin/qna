@@ -22,7 +22,8 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params)
+    @answer.update(answer_params) if @answer.user_id == current_user.id
+    @answers = @question.answers
   end
 
   private
