@@ -29,7 +29,9 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if @question.user_id == current_user.id
+    if @question.user_id == current_user.id
+      @question.update(question_params) ? flash[:success] = 'Ваш вопрос успешно отредактирован!' : flash.now[:danger] = 'Ошибка! Не удалось отредактировать Ваш вопрос!'
+    end    
   end
 
   def destroy
