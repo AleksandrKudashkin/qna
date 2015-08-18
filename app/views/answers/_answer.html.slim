@@ -1,7 +1,8 @@
   div class= "answer-#{answer.id}"
     = answer.body
     - if user_signed_in? && answer.user_id == current_user.id
-      = link_to " Удалить ответ ", question_answer_path(@question, answer), method: :delete 
+      div class= "edit_answer_#{answer.id}" id="edit_answer_info"
+      = link_to " Удалить ответ ", [@question, answer], method: :delete, remote: true 
       = link_to ' Редактировать ', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
         = f.label :body, 'Ваш ответ'

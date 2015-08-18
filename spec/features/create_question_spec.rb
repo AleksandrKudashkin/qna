@@ -16,7 +16,7 @@ feature 'Create question', %q{
     click_on 'Задать свой вопрос'
     fill_in 'Заголовок:', with: question.title
     fill_in 'Опишите свой вопрос подробнее:', with: question.body
-    click_on 'Задать вопрос!'
+    click_on 'Сохранить'
 
     expect(page).to have_content 'Ваш вопрос успешно создан!'
     expect(page).to have_content question.title

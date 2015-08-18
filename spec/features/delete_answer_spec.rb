@@ -10,14 +10,14 @@ feature 'Delete answer to a question', %q{
     given(:question) { create(:question, user: user) }
     given!(:answer) { create(:answer, question: question, user: user) }
 
-    scenario 'Authenticated user deletes his answer to question' do
+
+    scenario 'Authenticated user deletes his answer to question', js: true do
       sign_in(user)
-
       visit question_path(question)
-
+     
+      #save_and_open_page
       click_on 'Удалить ответ'
       
-      expect(current_path).to eq question_path(question)
       expect(page).to have_content 'Ваш ответ удалён!'
       expect(page).to_not have_content answer.body
     end

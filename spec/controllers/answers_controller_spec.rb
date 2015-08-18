@@ -42,29 +42,33 @@ RSpec.describe AnswersController, type: :controller do
 
     
     it 'not deletes the answer of the other user' do
-      expect { delete :destroy, id: f2_answer, question_id: f_question }.to_not change(f_question.answers, :count)
+      expect { delete :destroy, id: f2_answer, question_id: f_question, format: :js }.to_not change(f_question.answers, :count)
     end
   end
 
   describe 'PATCH #update' do
+    def do_patch(attrs)
+      patch :update, id: f_answer, question_id: f_question, answer: attrs, format: :js
+    end
+
     it 'assigns the requested answer to @answer' do
-      patch :update, id: f_answer, question_id: f_question, answer: attributes_for(:answer), format: :js
+      do_patch(attributes_for(:answer))
       expect(assigns(:answer)).to eq f_answer     
     end
 
     it 'assigns the question of requested answer to @question' do
-      patch :update, id: f_answer, question_id: f_question, answer: attributes_for(:answer), format: :js
+      do_patch(attributes_for(:answer))
       expect(assigns(:question)).to eq f_question     
     end
 
     it 'changes answer attributes' do
-      patch :update, id: f_answer, question_id: f_question, answer: { body: 'New body' }, format: :js
+      do_patch(body: 'New body')
       f_answer.reload
       expect(f_answer.body).to eq 'New body'
     end
 
     it 'renders update template' do
-      patch :update, id: f_answer, question_id: f_question, answer: attributes_for(:answer), format: :js
+      do_patch(attributes_for(:answer))
       expect(response).to render_template :update
     end
 

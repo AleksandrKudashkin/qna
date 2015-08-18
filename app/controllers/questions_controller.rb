@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [ :show, :index ]
-  before_action :find_question, only: [:show, :destroy]
+  before_action :find_question, only: [:show, :destroy, :update]
   
   def new
     @question = Question.new
@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answer = @question.answers.new
+    @answer = Answer.new
     @answers = @question.answers
   end
 
@@ -26,6 +26,10 @@ class QuestionsController < ApplicationController
       flash.now[:danger] = 'Ошибка! Не удалось создать Ваш вопрос!'
       render :new
     end
+  end
+
+  def update
+    @question.update(question_params) if @question.user_id == current_user.id
   end
 
   def destroy
