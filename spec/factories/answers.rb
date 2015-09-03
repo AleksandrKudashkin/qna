@@ -3,7 +3,7 @@ FactoryGirl.define do
     question nil
     sequence(:body) { |n| "Read the following manual#{n}" } 
     user nil
-    bestflag nil
+    bestflag false
   end
 
   factory :invalid_answer, class: 'Answer' do

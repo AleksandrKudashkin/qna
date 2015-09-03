@@ -26,7 +26,7 @@ class AnswersController < ApplicationController
   end
 
   def best
-    @answer.set_best_answer if @answer.user_id == current_user.id
+    @answer.set_best if @question.user_id == current_user.id
     @answers = @question.answers
   end
 

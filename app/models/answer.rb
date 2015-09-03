@@ -8,7 +8,7 @@ class Answer < ActiveRecord::Base
 
   default_scope { order(bestflag: :desc) }
 
-  def set_best_answer
+  def set_best
     transaction do
       question.answers.update_all(bestflag: false)
       update!(bestflag: true)
