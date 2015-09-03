@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question, except: [:index]  
-  before_action :find_answer, only: [:destroy, :update]
+  before_action :find_question
+  before_action :find_answer, only: [:destroy, :update, :best]
 
   def new
     @answer = @question.answers.new
@@ -22,6 +22,11 @@ class AnswersController < ApplicationController
 
   def update
     @answer.update(answer_params) if @answer.user_id == current_user.id
+    @answers = @question.answers
+  end
+
+  def best
+    @answer.set_best_answer if @answer.user_id == current_user.id
     @answers = @question.answers
   end
 

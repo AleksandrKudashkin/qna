@@ -7,7 +7,7 @@ RSpec.describe AnswersController, type: :controller do
   let!(:f_question) { create(:question, user: f_user) }
 
   let!(:f_answer) { create(:answer, question: f_question, user: f_user) }
-  let!(:f2_answer) { create(:answer, question: f_question, user: f2_user) }
+  let!(:f2_answer) { create(:answer, question: f_question, user: f2_user, bestflag: true) }  
 
   before { sign_in(f_user) }
 
@@ -76,6 +76,18 @@ RSpec.describe AnswersController, type: :controller do
       patch :update, id: f2_answer, question_id: f_question, answer: { body: 'New body' }, format: :js
       f2_answer.reload
       expect(f2_answer.body).to_not eq 'New body'
+    end
+  end
+
+  describe 'PATCH #best' do
+    it 'allows only one best answer' do
+      patch :best, id: f_answer, question_id: f_question, format: :js
+      
+      f_answer.reload
+      f2_answer.reload
+
+      expect(f2_answer.bestflag).to eq false
+      expect(f_answer.bestflag).to eq true
     end
   end
 end
