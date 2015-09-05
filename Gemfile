@@ -44,6 +44,7 @@ gem 'bootstrap-sass'
 gem 'bootstrap-will_paginate'
 gem 'will_paginate'
 gem 'faker'
+gem 'carrierwave'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
