@@ -1,12 +1,11 @@
+p
+=link_to "Задать свой вопрос", new_question_path, class: 'btn btn-primary'
+p
 - @questions.each do |q|
   h3
     = q.title
   p
     = q.body
   p
-    .btn.btn-info
+    .btn.btn-default
       = link_to "Помочь человеку", question_path(q)
-
-br
-br
-=link_to "Задать свой вопрос", new_question_path

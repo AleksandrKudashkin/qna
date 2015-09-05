@@ -6,9 +6,16 @@
   = f.label :body, 'Опишите свой вопрос подробнее:'
   br
   = f.text_area :body, size: "60x12"
+  p 
+  i Вложения:
+  p
+  = f.fields_for :attachments do |a|
+    = a.label :file, 'Прикрепить файл:'
+    br
+    = a.file_field :file
   p
   = f.submit "Сохранить"
 
 br
 br
-=link_to "К списку вопросов", questions_path
+=link_to "К списку вопросов", questions_path, class: 'btn btn-default'
