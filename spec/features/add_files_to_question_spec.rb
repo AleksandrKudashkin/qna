@@ -19,6 +19,6 @@ feature 'Add files to question', %q{
     fill_in 'Опишите свой вопрос подробнее:', with: question.body
     attach_file 'Прикрепить файл:', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Сохранить'
-    expect(page).to have_content 'spec_helper.rb'
+    expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
   end
 end

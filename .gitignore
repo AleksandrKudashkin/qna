@@ -20,3 +20,4 @@ doc/
 .secret
 .rubocop.yml
 rubocop_pre_commit_hook.rb
+/public/uploads
