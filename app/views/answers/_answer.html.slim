@@ -9,7 +9,9 @@
       i Вложения:
       ul
         - answer.attachments.each do |a|
-          li= link_to a.file.identifier, a.file.url
+          li id="file-#{a.id}"
+            = link_to a.file.identifier, a.file.url
+            = link_to('Удалить файл', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-danger', remote: true) if user_signed_in? && answer.user_id == current_user.id
     - if user_signed_in? && answer.user_id == current_user.id
       div class= "edit_answer_#{answer.id}" id="edit_answer_info"
       = link_to " Удалить ответ ", [@question, answer], method: :delete, remote: true 

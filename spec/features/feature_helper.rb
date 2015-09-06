@@ -1,9 +1,10 @@
 require 'rails_helper'
+require 'capybara/poltergeist'
 
 RSpec.configure do |config|
 
   #changing default js driver for capybara
-  Capybara.javascript_driver = :webkit
+  Capybara.javascript_driver = :poltergeist
 
   #database cleaner
   config.before(:suite) do
