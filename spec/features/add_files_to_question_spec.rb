@@ -14,11 +14,19 @@ feature 'Add files to question', %q{
     visit new_question_path
   end
 
-  scenario 'User adds a file while asking a question' do
+  scenario 'User adds a file while asking a question', js: true do
     fill_in 'Заголовок:', with: question.title
     fill_in 'Опишите свой вопрос подробнее:', with: question.body
-    attach_file 'Прикрепить файл:', "#{Rails.root}/spec/spec_helper.rb"
+    
+    2.times { click_on 'Добавить файл' }
+
+    inputs = all('input[type="file"]')
+    inputs[0].set("#{Rails.root}/spec/spec_helper.rb")
+    inputs[1].set("#{Rails.root}/spec/rails_helper.rb")
+    
     click_on 'Сохранить'
+
     expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
+    expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/2/rails_helper.rb'
   end
 end

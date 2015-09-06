@@ -9,10 +9,12 @@
   p 
   i Вложения:
   p
-  = f.fields_for :attachments do |a|
-    = a.label :file, 'Прикрепить файл:'
-    br
-    = a.file_field :file
+  #attachments
+    .links
+      = link_to_add_association 'Добавить файл', f, :attachments
+    = f.fields_for :attachments do |a|
+      = render 'attachment_fields', f: a
+      
   p
   = f.submit "Сохранить"
 
