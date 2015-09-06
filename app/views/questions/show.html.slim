@@ -20,10 +20,11 @@ hr
     p 
     i Вложения:
     p
+    #attachments
+    .links
+      = link_to_add_association 'Добавить файл', f, :attachments
     = f.fields_for :attachments do |a|
-      = a.label :file, 'Прикрепить файл:'
-      br
-      = a.file_field :file
+      = render 'attachment_fields', f: a
     p
     = f.submit "Сохранить"
 br
