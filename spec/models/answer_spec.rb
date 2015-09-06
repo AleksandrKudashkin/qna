@@ -8,6 +8,8 @@ RSpec.describe Answer, type: :model do
     it { should validate_length_of(:body).is_at_most(5000) }
     it { should belong_to :question }
     it { should belong_to :user }
+    it { should have_many :attachments }
+    it { should accept_nested_attributes_for :attachments }
 
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
