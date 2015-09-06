@@ -4,6 +4,12 @@
     - else
       = link_to " Лучший ", best_question_answer_path(@question, answer), method: :patch, remote: true, class: 'btn btn-success' if user_signed_in? && @question.user_id == current_user.id
     br= answer.body
+    - if answer.attachments.any?
+      b 
+      i Вложения:
+      ul
+        - answer.attachments.each do |a|
+          li= link_to a.file.identifier, a.file.url
     - if user_signed_in? && answer.user_id == current_user.id
       div class= "edit_answer_#{answer.id}" id="edit_answer_info"
       = link_to " Удалить ответ ", [@question, answer], method: :delete, remote: true 
