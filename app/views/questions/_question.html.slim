@@ -8,7 +8,10 @@
     i Вложения:
     ul
       - @question.attachments.each do |a|
-        li= link_to a.file.identifier, a.file.url
+        li id="file-#{a.id}"
+          = link_to(a.file.identifier, a.file.url)
+          = link_to('Удалить файл', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-danger', remote: true) if user_signed_in? && @question.user_id == current_user.id
+
   br
   - if user_signed_in? && @question.user_id == current_user.id
       = link_to("Удалить вопрос ", @question, method: :delete)

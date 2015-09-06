@@ -15,7 +15,6 @@ feature 'Delete answer to a question', %q{
       sign_in(user)
       visit question_path(question)
      
-      #save_and_open_page
       click_on 'Удалить ответ'
       
       expect(page).to have_content 'Ваш ответ удалён!'
