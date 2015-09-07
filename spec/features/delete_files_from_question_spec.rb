@@ -21,7 +21,7 @@ feature 'Delete files from question', %q{
       expect(page).to have_link "Удалить файл", href: attachment_path(attachment)
     end
 
-    scenario 'deletes his file', js: true do
+    scenario 'deletes his files', js: true do
       click_link "delete-file-#{attachment.id}"
       within '.question' do
         expect(page).to_not have_link attachment.file.identifier
