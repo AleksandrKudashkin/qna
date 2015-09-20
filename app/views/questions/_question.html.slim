@@ -2,7 +2,17 @@
     = @question.title
   p
     = @question.body
-  p 
+  div class="question-votes"
+    .q-rating
+      b рейтинг: 
+      =@rating
+    - if user_signed_in? && @question.user_id != current_user.id
+      .cancel-vote style=('display:none' unless @has_voted)
+        =link_to('',cancel_vote_question_path, method: :delete, class: 'glyphicon glyphicon-remove well-sm', id: 'q-cancel-vote', remote: true, data: { type: :json })
+      .vote-buttons style=('display:none' if @has_voted)
+        =link_to('',vote_up_question_path, method: :patch, class: 'glyphicon glyphicon-thumbs-up well-sm', id: 'q-vote-up', remote: true, data: { type: :json })
+        =link_to('',vote_down_question_path, method: :patch, class: 'glyphicon glyphicon-thumbs-down well-sm', id: 'q-vote-down', remote: true, data: { type: :json })
+
   - if @question.attachments.any?
     b 
     i Вложения:

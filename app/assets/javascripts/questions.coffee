@@ -7,6 +7,24 @@ ready = ->
     e.preventDefault();
     $(this).hide();
     $('form#edit-question').show()
+    
+  $('a#q-vote-up').bind 'ajax:success', (e, data, status, xhr) ->
+    $('.vote-buttons').hide()
+    $('.cancel-vote').show()
+    rating = $.parseJSON(xhr.responseText)
+    $('.q-rating').html('<b>рейтинг:</b> '+rating)
+
+  $('a#q-vote-down').bind 'ajax:success', (e, data, status, xhr) ->
+    $('.vote-buttons').hide()
+    $('.cancel-vote').show()
+    rating = $.parseJSON(xhr.responseText)
+    $('.q-rating').html('<b>рейтинг:</b> '+rating)  
+
+  $('a#q-cancel-vote').bind 'ajax:success', (e, data, status, xhr) ->
+    $('.cancel-vote').hide()
+    $('.vote-buttons').show()
+    rating = $.parseJSON(xhr.responseText)
+    $('.q-rating').html('<b>рейтинг:</b> '+rating)  
 
 $(document).ready(ready) # "вешаем" функцию ready на событие document.ready
 $(document).on('page:load', ready)  # "вешаем" функцию ready на событие page:load

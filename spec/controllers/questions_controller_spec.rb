@@ -49,7 +49,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
-    it 'rendres show view' do
+    it 'renders show view' do
       expect(response).to render_template :show
     end
   end
@@ -126,4 +126,60 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH#vote_up and PATCH#vote_down' do
+    
+    let(:author) { create(:user) }
+    let(:question) { create(:question, user: author) }
+    let(:other_user) { create(:user) }
+
+    context 'author' do
+      before { sign_in(author) }
+
+      it 'should not add new vote to question, vote up' do
+        patch :vote_up, id: question, format: :json
+        expect { patch :vote_up, id: question, format: :json }.to_not change(question.votes, :count)
+      end
+
+      it 'should not add new vote to question, vote down' do
+        patch :vote_up, id: question, format: :json
+        expect { patch :vote_up, id: question, format: :json }.to_not change(question.votes, :count)
+      end
+    end
+    
+    context 'other_user' do
+      before { sign_in(other_user) }
+
+      it 'should add new vote to question, vote up' do
+        expect { patch :vote_up, id: question, format: :json }.to change(question.votes, :count).by(1)
+      end
+
+      it 'should add new vote to question, vote down' do
+        expect { patch :vote_down, id: question, format: :json }.to change(question.votes, :count).by(1)
+      end
+
+      it 'should not add new vote to question if this user has already voted, vote up' do
+        patch :vote_up, id: question, format: :json
+        expect { patch :vote_up, id: question, format: :json }.to_not change(question.votes, :count)
+      end
+
+      it 'should not add new vote to question if this user has already voted, vote down' do
+        patch :vote_up, id: question, format: :json
+        expect { patch :vote_up, id: question, format: :json }.to_not change(question.votes, :count)
+      end
+    end
+  end
+
+  describe 'DELETE#cancel_vote' do
+    
+    let(:author) { create(:user) }
+    let(:question) { create(:question, user: author) }
+    let(:other_user) { create(:user) }
+    
+    before { sign_in(other_user) }
+
+    it 'should delete vote from question' do
+      patch :vote_up, id: question, format: :json
+      expect { delete :cancel_vote, id: question, format: :json }.to change(question.votes, :count).by(-1)
+    end
+  end
 end
