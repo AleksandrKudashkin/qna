@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: :votable do
-    resources :answers, only: [:create, :destroy, :update] do
+    resources :answers, only: [:create, :destroy, :update], concerns: :votable do
       member do
         patch 'best'
       end

@@ -5,13 +5,16 @@
   div class="question-votes"
     .q-rating
       b рейтинг: 
-      =@rating
+      = @question.votes_sum
     - if user_signed_in? && @question.user_id != current_user.id
-      .cancel-vote style=('display:none' unless @has_voted)
-        =link_to('',cancel_vote_question_path, method: :delete, class: 'glyphicon glyphicon-remove well-sm', id: 'q-cancel-vote', remote: true, data: { type: :json })
-      .vote-buttons style=('display:none' if @has_voted)
-        =link_to('',vote_up_question_path, method: :patch, class: 'glyphicon glyphicon-thumbs-up well-sm', id: 'q-vote-up', remote: true, data: { type: :json })
-        =link_to('',vote_down_question_path, method: :patch, class: 'glyphicon glyphicon-thumbs-down well-sm', id: 'q-vote-down', remote: true, data: { type: :json })
+      .cancel-vote style=('display:none' unless current_user.voted_for?(@question))
+        =link_to('',cancel_vote_question_path, method: :delete, class: 'glyphicon glyphicon-remove well-sm',
+          id: 'q-cancel-vote', remote: true, data: { type: :json })
+      .vote-buttons style=('display:none' if current_user.voted_for?(@question))
+        =link_to('',vote_up_question_path, method: :patch, class: 'glyphicon glyphicon-thumbs-up well-sm', 
+          id: 'q-vote-up', remote: true, data: { type: :json })
+        =link_to('',vote_down_question_path, method: :patch, class: 'glyphicon glyphicon-thumbs-down well-sm',
+          id: 'q-vote-down', remote: true, data: { type: :json })
 
   - if @question.attachments.any?
     b 
@@ -20,7 +23,8 @@
       - @question.attachments.each do |a|
         li id="file-#{a.id}"
           = link_to(a.file.identifier, a.file.url)
-          = link_to('Удалить файл', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-danger', remote: true) if user_signed_in? && @question.user_id == current_user.id
+          = link_to('Удалить файл', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-danger', 
+            remote: true) if user_signed_in? && @question.user_id == current_user.id
 
   br
   - if user_signed_in? && @question.user_id == current_user.id

@@ -11,7 +11,7 @@ feature "Voting for question", %q{
   given(:other_user) { create(:user) }
   given(:third_user) { create(:user) }
 
-  def nolinks_test(have_rights=false)
+  def links_test(have_rights=false)
     visit question_path(question)
     within ".question-votes" do
       if have_rights 
@@ -27,12 +27,12 @@ feature "Voting for question", %q{
 
   describe 'Cannot vote' do
     scenario 'Non-authenticated user doesnt see the link to vote' do
-      nolinks_test
+      links_test
     end
 
     scenario 'Author doesnt see the link to vote' do
       sign_in(user)
-      nolinks_test
+      links_test
     end
   end
 
@@ -40,31 +40,31 @@ feature "Voting for question", %q{
     before { sign_in(other_user) }
 
     scenario 'The other user votes up for the question', js:true do
-      nolinks_test(true)
+      links_test(true)
       click_on "q-vote-up"
       within ".q-rating" do
         expect(page).to have_content 'рейтинг: 1'
       end
-      nolinks_test
+      links_test
     end
 
     scenario 'The other user votes up for the question', js:true do
-      nolinks_test(true)
+      links_test(true)
       click_on "q-vote-down"
       within ".q-rating" do
         expect(page).to have_content 'рейтинг: -1'
       end
-      nolinks_test
+      links_test
     end
 
     scenario 'The other user cancels his vote for the question', js:true do
       visit question_path(question)
       click_on "q-vote-up"
-      nolinks_test
+      links_test
       expect(page).to have_selector :link_or_button, "q-cancel-vote"
 
       click_on "q-cancel-vote"
-      nolinks_test(true)      
+      links_test(true)      
     end
   end
 

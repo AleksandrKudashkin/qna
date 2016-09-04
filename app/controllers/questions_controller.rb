@@ -15,10 +15,6 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @answers = @question.answers
-    @rating = @question.votes.sum(:vote)
-    #voting
-    load_votable
-    @has_voted = user_has_voted?
   end
 
   def create

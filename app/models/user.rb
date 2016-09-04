@@ -7,4 +7,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  def voted_for?(votable)
+    votable.votes.find_by(user: self)
+  end
 end

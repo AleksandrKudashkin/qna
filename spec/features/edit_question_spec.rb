@@ -35,6 +35,15 @@ feature 'Question editing', %q{
       end
     end
 
+    scenario 'does not see edit form until press Edit', js: true do
+      visit question_path(question)
+
+      within '.question' do
+        expect(page).to_not have_content 'Заголовок:'
+        expect(page).to_not have_content 'Опишите свой вопрос подробнее:'
+      end
+    end
+
     scenario 'does not see the link to edit not his question' do
       visit question_path(question2)
       within '.question' do

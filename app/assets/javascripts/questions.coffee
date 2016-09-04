@@ -3,6 +3,8 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 ready = ->
+  $('form#edit-question').hide();
+
   $('.edit-question-link').click (e) -> 
     e.preventDefault();
     $(this).hide();
