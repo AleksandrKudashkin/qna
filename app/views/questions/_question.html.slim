@@ -3,10 +3,9 @@
   p
     = @question.body
   div class="question-votes"
-    .q-rating
-      b рейтинг: 
-      = @question.votes_sum
-    - if user_signed_in? && @question.user_id != current_user.id
+    strong рейтинг: 
+    span.q-rating =@question.votes_sum
+    - if user_signed_in? && !current_user.author_of?(@question)
       .cancel-vote style=('display:none' unless current_user.voted_for?(@question))
         =link_to('',cancel_vote_question_path, method: :delete, class: 'glyphicon glyphicon-remove well-sm',
           id: 'q-cancel-vote', remote: true, data: { type: :json })
@@ -24,10 +23,10 @@
         li id="file-#{a.id}"
           = link_to(a.file.identifier, a.file.url)
           = link_to('Удалить файл', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-danger', 
-            remote: true) if user_signed_in? && @question.user_id == current_user.id
+            remote: true) if user_signed_in? && current_user.author_of?(@question)
 
   br
-  - if user_signed_in? && @question.user_id == current_user.id
+  - if user_signed_in? && current_user.author_of?(@question)
       = link_to("Удалить вопрос ", @question, method: :delete)
       = link_to(" Редактировать", '', class: 'edit-question-link', data: { question_id: @question.id })
       = form_for @question, remote: true, html: { id: "edit-question" } do |f|

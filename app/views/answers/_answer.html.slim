@@ -5,11 +5,10 @@
       = link_to " Лучший ", best_question_answer_path(@question, answer), method: :patch, remote: true, class: 'btn btn-success' if user_signed_in? && @question.user_id == current_user.id
     br= answer.body
 
-    div class="a-rating-#{answer.id}"
-      strong рейтинг: 
-      = answer.votes_sum 
+    strong рейтинг: 
+    span class="a-rating-#{answer.id}" =answer.votes_sum 
 
-    - if user_signed_in? && (answer.user_id != current_user.id)
+    - if user_signed_in? && !current_user.author_of?(answer)
       div class="a-cancel-vote-#{answer.id}" style=('display:none' unless current_user.voted_for?(answer))
         =link_to('',cancel_vote_question_answer_path(answer.question, answer), method: :delete, 
           class: 'glyphicon glyphicon-remove well-sm',
@@ -30,10 +29,10 @@
         - answer.attachments.each do |a|
           li id="file-#{a.id}"
             = link_to a.file.identifier, a.file.url
-            - if user_signed_in? && answer.user_id == current_user.id
+            - if user_signed_in? && current_user.author_of?(answer)
               = link_to('Удалить файл', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-danger', remote: true)
 
-    - if user_signed_in? && answer.user_id == current_user.id
+    - if user_signed_in? && current_user.author_of?(answer)
       div class= "edit_answer_#{answer.id}" id="edit_answer_info"
       = link_to " Удалить ответ ", [@question, answer], method: :delete, remote: true 
       = link_to ' Редактировать ', '', class: 'edit-answer-link', data: { answer_id: answer.id }

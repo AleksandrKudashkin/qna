@@ -6,7 +6,7 @@ module Voted
   end
 
   def vote_up
-    if user_has_voted?
+    if current_user.voted_for?(@votable)
       respond_to_json_with_errors
     else
       set_vote(1) 
@@ -15,7 +15,7 @@ module Voted
   end
 
   def vote_down
-    if user_has_voted?
+    if current_user.voted_for?(@votable)
       respond_to_json_with_errors
     else
       set_vote(-1) 
@@ -24,7 +24,7 @@ module Voted
   end
 
   def cancel_vote
-    if user_has_voted? 
+    if current_user.voted_for?(@votable)
       @votable.votes.find_by(user: current_user).destroy
       respond_to_json 
     else
@@ -40,10 +40,6 @@ module Voted
 
     def load_votable
       @votable = model_klass.find(params[:id])
-    end
-
-    def user_has_voted?
-      @votable.votes.find_by(user: current_user)
     end
 
     def set_vote(value)

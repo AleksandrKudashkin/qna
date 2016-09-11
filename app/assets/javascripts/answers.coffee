@@ -14,21 +14,21 @@ ready = ->
     $('.a-vote-buttons-' + answerId).hide()
     $('.a-cancel-vote-' + answerId).show()
     rating = $.parseJSON(xhr.responseText)
-    $('.a-rating-' + answerId).html('<b>рейтинг:</b> '+rating)
+    $('.a-rating-' + answerId).html(rating)
 
   $('a#a-vote-down').bind 'ajax:success', (e, data, status, xhr) ->
     answerId = $(this).data('answerId')
     $('.a-vote-buttons-' + answerId).hide()
     $('.a-cancel-vote-' + answerId).show()
     rating = $.parseJSON(xhr.responseText)
-    $('.a-rating-' + answerId).html('<b>рейтинг:</b> '+rating)
+    $('.a-rating-' + answerId).html(rating)
 
   $('a#a-cancel-vote').bind 'ajax:success', (e, data, status, xhr) ->
     answerId = $(this).data('answerId')
     $('.a-cancel-vote-' + answerId).hide()
     $('.a-vote-buttons-' + answerId).show()
     rating = $.parseJSON(xhr.responseText)
-    $('.a-rating-' + answerId).html('<b>рейтинг:</b> '+rating)
+    $('.a-rating-' + answerId).html(rating)
 
 $(document).ready(ready) # "вешаем" функцию ready на событие document.ready
 $(document).on('page:load', ready)  # "вешаем" функцию ready на событие page:load

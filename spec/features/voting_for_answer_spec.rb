@@ -56,7 +56,7 @@ feature "Voting for answer", %q{
         click_on "a-vote-up"
       end
       within ".a-rating-#{answer.id}" do
-        expect(page).to have_content 'рейтинг: 1'
+        expect(page).to have_content '1'
       end   
     end
 
@@ -66,7 +66,7 @@ feature "Voting for answer", %q{
         click_on "a-vote-down"
       end
       within ".a-rating-#{answer.id}" do
-        expect(page).to have_content 'рейтинг: -1'
+        expect(page).to have_content '-1'
       end
     end
 
@@ -84,7 +84,7 @@ feature "Voting for answer", %q{
       end
 
       within ".a-rating-#{answer.id}" do
-        expect(page).to have_content 'рейтинг: 2'
+        expect(page).to have_content '2'
       end
     end
 
@@ -102,7 +102,7 @@ feature "Voting for answer", %q{
       end
 
       within ".a-rating-#{answer.id}" do
-        expect(page).to have_content 'рейтинг: -2'
+        expect(page).to have_content '-2'
       end
     end
 
@@ -122,7 +122,7 @@ feature "Voting for answer", %q{
 
       links_test(answer, true)
       within ".a-rating-#{answer.id}" do
-        expect(page).to have_content 'рейтинг: 1'
+        expect(page).to have_content '1'
       end
     end
   end

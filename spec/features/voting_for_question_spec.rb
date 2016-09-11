@@ -43,7 +43,7 @@ feature "Voting for question", %q{
       links_test(true)
       click_on "q-vote-up"
       within ".q-rating" do
-        expect(page).to have_content 'рейтинг: 1'
+        expect(page).to have_content '1'
       end
       links_test
     end
@@ -52,7 +52,7 @@ feature "Voting for question", %q{
       links_test(true)
       click_on "q-vote-down"
       within ".q-rating" do
-        expect(page).to have_content 'рейтинг: -1'
+        expect(page).to have_content '-1'
       end
       links_test
     end
@@ -83,7 +83,7 @@ feature "Voting for question", %q{
       click_on "q-vote-up"
 
       within ".q-rating" do
-        expect(page).to have_content 'рейтинг: 2'
+        expect(page).to have_content '2'
       end      
     end
 
@@ -96,7 +96,7 @@ feature "Voting for question", %q{
       click_on "q-vote-down"
 
       within ".q-rating" do
-        expect(page).to have_content 'рейтинг: -2'
+        expect(page).to have_content '-2'
       end      
     end
   end

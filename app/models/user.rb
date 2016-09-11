@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   def voted_for?(votable)
-    votable.votes.find_by(user: self)
+    votes.where(votable: votable).exists?
+  end
+
+  def author_of?(thing)
+    self == thing.user
   end
 end
