@@ -167,4 +167,20 @@ describe AnswersController do
       expect(answer.bestflag).to eq true
     end
   end
+
+  describe 'POST#add_comment' do
+    before { sign_in(user) }
+
+    it 'should add a new comment to question' do
+      question
+      answer
+      expect do
+        post :add_comment,
+             id: answer,
+             question_id: question,
+             comment: { body: 'New comment' },
+             format: :json
+      end.to change(answer.comments, :count).by(1)
+    end
+  end
 end

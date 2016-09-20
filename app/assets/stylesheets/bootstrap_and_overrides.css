@@ -40,6 +40,11 @@ li {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+div.q-comments {
+  font-size: 9pt;
+  color: gray;
+  font-weight: normal;
+}
 div.question-rating, div.answer-rating {
   text-align: center;
 }

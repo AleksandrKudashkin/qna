@@ -51,3 +51,24 @@ div class="row answer-#{answer.id}"
           = f.label :body, 'Your answer:'
           = f.text_area :body, size: "40x6", class: "form-control"
         = f.submit "Save", class: "btn btn-xs btn-primary"
+    .row
+      .col-md-1
+      .col-md-11
+        br
+        em Comments:
+        hr
+        div class="a-comments-#{answer.id}"
+          = render 'comments/comment', commentable: answer
+          = subscribe_to "/answers/#{answer.id}/comments"
+        div class="a-comments-errors-#{answer.id}"
+        - if user_signed_in?
+          = form_for(answer.comments.new, 
+              url: add_comment_question_answer_path(@question, answer), 
+              html: { class: "form-inline new-answer-comment-#{answer.id}",
+                      id: "new_answer_comment" }, 
+              remote: true, 
+              data: { type: :json, commentable_id: answer.id }) do |f|
+            .form-group
+              = f.label :body, 'Enter a comment', class: "sr-only"
+              = f.text_field :body, class: "form-control comment-body-#{answer.id}"
+            = f.submit "Send", class: "btn btn-xs btn-primary"

@@ -4,10 +4,10 @@
   <% end %>
 <% else %>
   $('.new_answer_info').html('<%= j render 'notice' %>').show();
-  <% if @answer.question.answers.count == 1 %>
-    $('.answers').append('<%= j render "questions/answers_header", answers: @answer %>');
-  <% else %>
-    $('.answers-body').append('<%= j render @answer %>');
+
+  <% publish_to "/questions/#{@answer.question.id}/answers" do %>
+    $('.answers').append('<%= j render @answer %>');
   <% end %>
+
   $('#new_answer').find('#answer_body').val('');
 <% end %> 

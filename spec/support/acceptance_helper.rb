@@ -1,5 +1,5 @@
 module AcceptanceHelper
-  Capybara.default_wait_time = 5
+  Capybara.default_max_wait_time = 5
   def sign_in(user)
     visit new_user_session_path
     fill_in 'Email', with: user.email

@@ -19,14 +19,14 @@ feature 'Delete files from question', %q(
     end
 
     scenario 'sees the links to delete files' do
-      within '.answers-body' do
+      within ".answer-#{answer.id}" do
         expect(page).to have_link("delete-file-#{attachment.id}", href: attachment_path(attachment))
       end
     end
 
     scenario 'deletes his file', js: true do
       click_link "delete-file-#{attachment.id}"
-      within '.answers-body' do
+      within ".answer-#{answer.id}" do
         expect(page).to_not have_link attachment.file.identifier
       end
     end

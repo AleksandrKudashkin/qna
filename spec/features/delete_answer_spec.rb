@@ -13,7 +13,7 @@ feature 'Delete answer to a question', %q(
   scenario 'Authenticated user deletes his answer to question', js: true do
     sign_in(user)
     visit question_path(question)
-    within('.answers-body') do
+    within ".answer-#{answer.id}" do
       click_on 'Delete'
     end
 
@@ -23,7 +23,7 @@ feature 'Delete answer to a question', %q(
 
   scenario 'Non-authenticated user tries to delete an answer' do
     visit question_path(question)
-    within('.answers-body') do
+    within ".answer-#{answer.id}" do
       expect(page).to_not have_content 'Delete'
     end
   end

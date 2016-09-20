@@ -1,22 +1,22 @@
 source 'https://rubygems.org'
 # main
 ruby '2.2.5'
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.7'
 gem 'pg'
-# Use SCSS for stylesheets
+
+# front-end
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'slim'
 gem 'twitter-bootstrap-rails'
+gem 'jquery-rails'
+gem 'turbolinks'
+gem 'jquery-turbolinks'
 
 # Using Devise for authorization
 gem 'devise'
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-gem 'turbolinks'
-gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -29,6 +29,14 @@ gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
 
+# pub/sub
+gem 'private_pub'
+gem 'thin'
+
+group :development do
+  gem 'web-console', '~> 2.0'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -40,9 +48,6 @@ group :development, :test do
   # gem 'capybara-webkit'
   gem 'poltergeist'
   gem 'database_cleaner'
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end

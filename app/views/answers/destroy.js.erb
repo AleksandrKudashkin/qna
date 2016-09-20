@@ -1,6 +1,2 @@
 $('.new_answer_info').html('<%= j render 'notice' %>').show();
-<% if @answer.question.answers.blank? %>
-  $('.answers-header').remove();
-  $('.answers-body').remove();
-<% end %>
 $('.answer-<%= @answer.id %>').remove();

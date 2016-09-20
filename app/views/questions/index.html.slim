@@ -1,9 +1,11 @@
 p
 =link_to "Ask a question", new_question_path, class: 'btn btn-success'
 p
-- @questions.each do |q|
-  h3
-    i> class="fa fa-question-circle"
-    = link_to q.title, q
-  p
-    = q.body
+.questions
+  - @questions.each do |q|
+    h3
+      i> class="fa fa-question-circle"
+      = link_to q.title, q
+    p
+      = q.body
+= subscribe_to "/questions/index"

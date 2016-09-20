@@ -3,13 +3,22 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 ready = ->
-  $('form#edit-question').hide();
+  $('form#edit-question').hide()
 
   $('.edit-question-link').click (e) ->
-    e.preventDefault();
-    $(this).hide();
+    e.preventDefault()
+    $(this).hide()
     $('form#edit-question').show()
-    
+
+  $('.new-question-comment').on 'ajax:success', (e, data, status, xhr) ->
+    msg = $.parseJSON(xhr.responseText)
+    if typeof msg['comment'] != 'undefined'
+       $('input#comment_body.form-control').val('')
+    #   $('.q-comments').append('<p>' + msg['comment'] + '</p>')
+       $('.q-comments-errors').html('')
+    if typeof msg['error'] != 'undefined'
+      $('.q-comments-errors').html('<font color=red>' + msg['error'] + '</font>')
+
   $('a#q-vote-up').bind 'ajax:success', (e, data, status, xhr) ->
     $('.vote-button-up').hide()
     $('.vote-button-down').hide()
@@ -31,6 +40,15 @@ ready = ->
     rating = $.parseJSON(xhr.responseText)
     $('.q-rating').html(rating)
 
-$(document).ready(ready) # "вешаем" функцию ready на событие document.ready
-$(document).on('page:load', ready)  # "вешаем" функцию ready на событие page:load
-$(document).on('page:update', ready) # "вешаем" функцию ready на событие page:update
+  questionId = $('.q-comments').data('questionId')
+  PrivatePub.subscribe '/questions/' + questionId + '/comments', (data, channel) ->
+    comment = $.parseJSON(data['comment'])
+    $('.q-comments').append('<p>' + comment.body + '</p>')
+
+  PrivatePub.subscribe '/questions/index', (data, channel) ->
+    question = $.parseJSON(data['question'])
+    html = '<h3><i class="fa fa-question-circle"></i><a href=/questions/' + question.id + '>' + question.title + '</a></h3><p>' + question.body + '</p>'
+    $('.questions').append(html)
+    $('#new_comment').find("comment_body").val()
+
+document.addEventListener('turbolinks:load', ready)

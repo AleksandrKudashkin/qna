@@ -1,9 +1,32 @@
 .question
   = render @question
-
-.answers
-- if @question.answers.any? 
-  = render "answers_header", answers: @answers
+.row
+  .col-md-1
+  .col-md-11
+    em Comments:
+    hr
+    .q-comments data={question_id: "#{@question.id}"}
+      = render 'comments/comment', commentable: @question
+      = subscribe_to "/questions/#{@question.id}/comments"
+    .q-comments-errors
+    - if user_signed_in?
+      = form_for(@question.comments.new, 
+          url: add_comment_question_path, 
+          html: { class: "form-inline new-question-comment" }, 
+          remote: true, 
+          data: { type: :json, commentable_id: @question.id }) do |f|
+        .form-group
+          = f.label :body, 'Enter a comment', class: "sr-only"
+          = f.text_field :body, class: "form-control"
+        = f.submit "Send", class: "btn btn-xs btn-primary"
+    
+br
+h4 Answers:
+hr
+.answers data={question_id: "#{@question.id}"}
+  - if @question.answers.any? 
+    = render @answers
+= subscribe_to "/questions/#{@question.id}/answers"
 
 - if user_signed_in?
   hr
@@ -17,4 +40,3 @@
 br
 br
   = link_to "To questions index", questions_path, class: "btn btn-md btn-default"
- 

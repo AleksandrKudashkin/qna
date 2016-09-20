@@ -4,10 +4,20 @@
 
 ready = ->
   $('.edit-answer-link').click (e) ->
-    e.preventDefault();
-    $(this).hide();
+    e.preventDefault()
+    $(this).hide()
     answerId = $(this).data('answerId')
     $('form#edit-answer-' + answerId).show()
+
+  $('#new_answer_comment').on 'ajax:success', (e, data, status, xhr) ->
+    answerId = $(this).data('commentableId')
+    msg = $.parseJSON(xhr.responseText)
+    if typeof msg['comment'] != 'undefined'
+      $('.comment-body-' + answerId).val('')
+      $('.a-comments-' + answerId).append('<p>' + msg['comment'] + '</p>')
+      $('.a-comments-errors-' + answerId).html('')
+    if typeof msg['error'] != 'undefined'
+      $('.a-comments-errors-' + answerId).html('<font color=red>' + msg['error'] + '</font>')
 
   $('a#a-vote-up').bind 'ajax:success', (e, data, status, xhr) ->
     answerId = $(this).data('answerId')
@@ -33,6 +43,4 @@ ready = ->
     rating = $.parseJSON(xhr.responseText)
     $('#a-rating-' + answerId).html(rating)
 
-$(document).ready(ready) # "вешаем" функцию ready на событие document.ready
-$(document).on('page:load', ready)  # "вешаем" функцию ready на событие page:load
-$(document).on('page:update', ready) # "вешаем" функцию ready на событие page:update
+document.addEventListener('turbolinks:load', ready)

@@ -23,12 +23,6 @@ feature 'Answer editing', %q(
       visit question_path(question)
     end
 
-    scenario 'sees link to edit his answer' do
-      within '.answers-body' do
-        expect(page).to have_link 'Edit'
-      end
-    end
-
     scenario 'sees edit links only to his answers' do
       within ".answer-#{answer.id}" do
         expect(page).to have_link 'Edit'
@@ -39,7 +33,7 @@ feature 'Answer editing', %q(
     end
 
     scenario 'tries to edit his answer', js: true do
-      within '.answers-body' do
+      within ".answer-#{answer.id}" do
         click_on 'Edit'
         fill_in 'Your answer:', with: 'Read the following manual twice (edited)!'
         click_on 'Save'
