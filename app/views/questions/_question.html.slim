@@ -7,12 +7,12 @@
     span.q-rating =@question.votes_sum
     - if user_signed_in? && !current_user.author_of?(@question)
       .cancel-vote style=('display:none' unless current_user.voted_for?(@question))
-        =link_to('',cancel_vote_question_path, method: :delete, class: 'glyphicon glyphicon-remove well-sm',
+        =link_to('',cancel_vote_question_path, method: :delete, class: 'fa fa-times',
           id: 'q-cancel-vote', remote: true, data: { type: :json })
       .vote-buttons style=('display:none' if current_user.voted_for?(@question))
-        =link_to('',vote_up_question_path, method: :patch, class: 'glyphicon glyphicon-thumbs-up well-sm', 
+        =>link_to('',vote_up_question_path, method: :patch, class: 'fa fa-plus', 
           id: 'q-vote-up', remote: true, data: { type: :json })
-        =link_to('',vote_down_question_path, method: :patch, class: 'glyphicon glyphicon-thumbs-down well-sm',
+        =link_to('',vote_down_question_path, method: :patch, class: 'fa fa-minus',
           id: 'q-vote-down', remote: true, data: { type: :json })
 
   - if @question.attachments.any?

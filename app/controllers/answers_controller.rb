@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
 
   def destroy
     if @answer.user_id == current_user.id
-      @answer.destroy ? flash[:warning] = 'Ваш ответ удалён!' : flash.now[:danger] = 'Ошибка! Не удалось удалить Ваш ответ!'
+      @answer.destroy ? flash[:notice] = 'Ваш ответ удалён!' : flash.now[:danger] = 'Ошибка! Не удалось удалить Ваш ответ!'
     end
   end
 

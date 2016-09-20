@@ -1,11 +1,11 @@
 p
-=link_to "Задать свой вопрос", new_question_path, class: 'btn btn-primary'
+=link_to "Задать свой вопрос", new_question_path, class: 'btn btn-success'
 p
 - @questions.each do |q|
   h3
+    i> class="fa fa-question-circle"
     = q.title
   p
     = q.body
   p
-    .btn.btn-default
-      = link_to "Помочь человеку", question_path(q)
+    = link_to "Помочь человеку", question_path(q), class: "btn btn-sm btn-info"

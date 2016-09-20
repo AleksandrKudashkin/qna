@@ -1,32 +1,50 @@
 doctype html
 html
   head
-    title StackOverflowClone
-    = stylesheet_link_tag    'application', media: 'all'
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    meta charset="utf-8" /
+    meta content="IE=Edge,chrome=1" http-equiv="X-UA-Compatible" /
+    meta content="width=device-width, initial-scale=1.0" name="viewport" /
+    title Questions & Answers
+    = stylesheet_link_tag 'application', media: 'all'
+    = stylesheet_link_tag 'application', 'https://fonts.googleapis.com/css?family=Fauna+One|Playfair+Display'
     = javascript_include_tag 'application'
     = csrf_meta_tags
 
   body
-    .navbar.navbar-default
+    .navbar.navbar-static-top
       .container
-        a.navbar-brand href=root_path
-          img src="/assets/logo.jpg"/
-        a.navbar-brand href=root_path
-          span StackOverFlow Clone
-        ul.nav.nav-tabs.navbar-right
-          - if user_signed_in?
-            li
-              = link_to "Log out", destroy_user_session_path, :method => :delete 
-          - else
-            li 
-              a href=new_user_session_path
-                'Sign in
-            li 
-              a href=new_user_registration_path
-                'Sign up
-          
+        .navbar-header
+          button.navbar-toggle data-target=".navbar-responsive-collapse" data-toggle="collapse" type="button" 
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
 
-    .container  
-      .flash-notice
-        = render 'notice'
-      = yield
+          a.navbar-brand href=root_path 
+            i> aria-hidden="true" class="fa fa-graduation-cap"
+            em.brand Questions & Answers
+
+        .navbar-collapse.collapse.navbar-responsive-collapse
+          ul.nav.navbar-nav.navbar-right
+            - if user_signed_in?
+              li= link_to 'Log out', destroy_user_session_path, method: :delete
+            - else
+              li= link_to 'Sign in', new_user_session_path
+              li= link_to 'Sign up', new_user_registration_path
+
+    .container
+      .row.well.well-lg
+        .col-lg-12
+          = bootstrap_flash
+          = yield
+
+    .footer
+      .container
+        .row.text-center
+          .col-md-12
+            |© 2016 Aleksandr Kudashkin. 
+            br
+            |A class project at online school for developers 
+            a href="http://www.thinknetica.com" Thinknetica
+            |.

@@ -1,0 +1,74 @@
+/*
+  =require twitter-bootstrap-static/bootstrap
+
+  Use Font Awesome icons (default)
+  To use Glyphicons sprites instead of Font Awesome, replace with "require twitter-bootstrap-static/sprites"
+  =require twitter-bootstrap-static/fontawesome
+  */
+html {
+ position: relative;
+ min-height: 100%;
+}
+body {
+/* Margin bottom by footer height */
+  margin-bottom: 80px;
+  font-family: 'Open Serif', sans-serif;
+}
+i.fa.fa-graduation-cap {
+  font-size: 16pt;
+}
+em.brand {
+  font-family: 'Playfair Display', serif;
+}
+.new-edit .form-control {
+  width: auto;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 80px;
+  background-color: #333;
+  color: #efefef;
+  padding-top: 20px;
+}
+.footer a {
+  color: #639bcf;
+}
+.brand {
+  font-size: 24px;
+  color: #fff;
+}
+.row {
+  margin-bottom: 20px;
+}
+.btn-sm {
+  margin-right: 20px;
+}
+.form-inline .btn {
+  margin-left: 10px;
+}
+.container {
+  max-width: 960px;
+}
+
+.navbar {
+  background-color: rgb(51,122,183);
+}
+.navbar a {
+  color: #d8e6f3;
+}
+.nav > li > a:hover, 
+.nav > li > a:focus,
+.nav .open > a,
+.nav .open > a:hover, 
+.nav .open > a:focus,
+.dropdown-menu > li > a:focus,
+.dropdown-menu > li > a:hover {
+  background-color: #204d74;
+  color: #fff;
+}
+.navbar-toggle .icon-bar {
+  background-color: #d8e6f3;
+}
