@@ -1,5 +1,4 @@
 FactoryGirl.define do
-
   factory :question do
     sequence(:title) { |n| "MyTitle#{n}" }
     sequence(:body)  { |n| "MyQuestionText#{n}" }

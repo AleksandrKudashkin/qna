@@ -1,45 +1,53 @@
-  div class= "answer-#{answer.id}"
-    - if answer.bestflag
-      span id="best_answer" class="glyphicon glyphicon-ok"    
-    - else
-      = link_to " Лучший ", best_question_answer_path(@question, answer), method: :patch, remote: true, class: 'btn btn-success' if user_signed_in? && @question.user_id == current_user.id
-    br= answer.body
+div class="row answer-#{answer.id}"
+  .col-md-1.answer-rating
+    .answer-votes
+      - if user_signed_in? && !current_user.author_of?(answer)
+        div class="a-vote-button-up-#{answer.id}" style=('display:none' if current_user.voted_for?(answer))
+          =>link_to('',vote_up_question_answer_path(answer.question, answer), method: :patch, 
+                   class: 'fa fa-sort-asc', 
+                   id:"a-vote-up", remote: true, data: { type: :json, answer_id: answer.id })
+      span class="a-rating" id="a-rating-#{answer.id}" =answer.votes_sum 
 
-    strong рейтинг: 
-    span class="a-rating-#{answer.id}" =answer.votes_sum 
-
-    - if user_signed_in? && !current_user.author_of?(answer)
-      div class="a-cancel-vote-#{answer.id}" style=('display:none' unless current_user.voted_for?(answer))
-        =link_to('',cancel_vote_question_answer_path(answer.question, answer), method: :delete, 
-          class: 'glyphicon glyphicon-remove well-sm',
-          id: 'a-cancel-vote', remote: true, data: { type: :json, answer_id: answer.id })
-
-      div class="a-vote-buttons-#{answer.id}" style=('display:none' if current_user.voted_for?(answer))
-        =link_to('',vote_up_question_answer_path(answer.question, answer), method: :patch, 
-                 class: 'glyphicon glyphicon-thumbs-up well-sm', 
-                 id:"a-vote-up", remote: true, data: { type: :json, answer_id: answer.id })
-        =link_to('',vote_down_question_answer_path(answer.question, answer), method: :patch,
-                 class: 'glyphicon glyphicon-thumbs-down well-sm',
-                 id:"a-vote-down", remote: true, data: { type: :json, answer_id: answer.id })
+      - if user_signed_in? && !current_user.author_of?(answer)
+        div class="a-cancel-vote-#{answer.id}" style=('display:none' unless current_user.voted_for?(answer))
+          =link_to('',cancel_vote_question_answer_path(answer.question, answer), method: :delete, 
+            class: 'fa fa-times', id: 'a-cancel-vote', remote: true, data: { type: :json, answer_id: answer.id })
+        div class="a-vote-button-down-#{answer.id}" style=('display:none' if current_user.voted_for?(answer))
+          =link_to('',vote_down_question_answer_path(answer.question, answer), method: :patch,
+                   class: 'fa fa-sort-desc',
+                   id:"a-vote-down", remote: true, data: { type: :json, answer_id: answer.id })
+  .col-md-1
+    .best-flag
+      - if answer.bestflag
+        span id="best_answer" class="fa fa-check"    
+      - else
+        - if user_signed_in? && current_user.author_of?(@question)
+          = link_to "Best", best_question_answer_path(@question, answer), method: :patch, remote: true, 
+                    class: 'btn btn-xs btn-default' 
+  .col-md-10.well.well-sm  
+    = answer.body
 
     - if answer.attachments.any?
-      b 
-      i Вложения:
-      ul
-        - answer.attachments.each do |a|
-          li id="file-#{a.id}"
-            = link_to a.file.identifier, a.file.url
-            - if user_signed_in? && current_user.author_of?(answer)
-              = link_to('Удалить файл', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-danger', remote: true)
+      div class="attachments-#{answer.id}" data-answer-id="#{answer.id}" 
+        br
+        strong
+          em Attachments:
+        ul
+          - answer.attachments.each do |a|
+            li id="file-#{a.id}"
+              = link_to a.file.identifier, a.file.url
+              |&nbsp;&nbsp;&nbsp;
+              - if user_signed_in? && current_user.author_of?(answer)
+                = link_to('', a, method: :delete, id: "delete-file-#{a.id}", class: 'fa fa-trash-o btn btn-xs btn-danger', remote: true)
 
     - if user_signed_in? && current_user.author_of?(answer)
       div class= "edit_answer_#{answer.id}" id="edit_answer_info"
-      = link_to " Удалить ответ ", [@question, answer], method: :delete, remote: true 
-      = link_to ' Редактировать ', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+      br
+      => link_to "Edit", '', class: 'btn btn-xs btn-warning edit-answer-link', data: { answer_id: answer.id }
+      = link_to "Delete", [@question, answer], method: :delete, remote: true, class: "btn btn-xs btn-danger" 
       = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
-        = f.label :body, 'Ваш ответ'
         br
-        = f.text_area :body
-        p
-        = f.submit "Сохранить"
-    p
+        .form-group
+          = f.label :body, 'Your answer:'
+          = f.text_area :body, size: "40x6", class: "form-control"
+        = f.submit "Save", class: "btn btn-xs btn-primary"

@@ -2,11 +2,10 @@ require 'rails_helper'
 require 'capybara/poltergeist'
 
 RSpec.configure do |config|
-
-  #changing default js driver for capybara
+  # changing default js driver for capybara
   Capybara.javascript_driver = :poltergeist
 
-  #database cleaner
+  # database cleaner
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end
@@ -30,5 +29,4 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.include AcceptanceHelper, type: :feature
-
 end

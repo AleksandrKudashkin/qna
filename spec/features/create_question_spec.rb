@@ -1,11 +1,11 @@
 require_relative 'feature_helper'
 
-feature 'Create question', %q{
+feature 'Create question', %q(
   In order to get answer from community
   As an authenticated user
   I want to be able to ask questions
-} do
-  
+) do
+
   given!(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
@@ -13,19 +13,19 @@ feature 'Create question', %q{
     sign_in(user)
 
     visit questions_path
-    click_on 'Задать свой вопрос'
-    fill_in 'Заголовок:', with: question.title
-    fill_in 'Опишите свой вопрос подробнее:', with: question.body
-    click_on 'Сохранить'
+    click_on 'Ask a question'
+    fill_in 'Title:', with: question.title
+    fill_in 'Description:', with: question.body
+    click_on 'Save'
 
-    expect(page).to have_content 'Ваш вопрос успешно создан!'
+    expect(page).to have_content 'Your question has been created!'
     expect(page).to have_content question.title
     expect(page).to have_content question.body
   end
 
   scenario 'Non-authenticated user tries to create a question' do
     visit questions_path
-    click_on 'Задать свой вопрос'
+    click_on 'Ask a question'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end

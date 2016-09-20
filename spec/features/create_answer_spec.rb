@@ -1,11 +1,11 @@
 require_relative 'feature_helper'
 
-feature 'Create answer to a question', %q{
+feature 'Create answer to a question', %q(
   In order to help a man to solve his problem
   As an Authenticated user
   I want to be able to create an answer to a question
-} do
-    
+) do
+
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
@@ -14,13 +14,13 @@ feature 'Create answer to a question', %q{
 
     visit question_path(question)
 
-    fill_in 'Ваш ответ', with: 'Read the following manual!'
-    click_on 'Сохранить'
+    fill_in 'Your answer', with: 'Read the following manual!'
+    click_on 'Save'
 
     expect(current_path).to eq question_path(question)
-    expect(page).to have_content 'Ваш ответ сохранён!'
+    expect(page).to have_content 'Your answer has been saved!'
     expect(page).to have_content 'Read the following manual!'
-    
+
     within '.new_answer' do
       expect(find_field('answer_body').value).to eq ''
     end
@@ -31,7 +31,7 @@ feature 'Create answer to a question', %q{
 
     visit question_path(question)
 
-    click_on 'Сохранить'
+    click_on 'Save'
 
     expect(page).to have_content "Body can't be blank"
   end
@@ -39,6 +39,6 @@ feature 'Create answer to a question', %q{
   scenario 'Non-authenticated user tries to create a question' do
     visit question_path(question)
 
-    expect(page).to_not have_content 'Ваш ответ'
+    expect(page).to_not have_content 'Your answer'
   end
 end

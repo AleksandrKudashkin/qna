@@ -9,7 +9,7 @@ module Voted
     if current_user.voted_for?(@votable)
       respond_to_json_with_errors
     else
-      set_vote(1) 
+      set_vote(1)
       respond_to_json
     end
   end
@@ -18,7 +18,7 @@ module Voted
     if current_user.voted_for?(@votable)
       respond_to_json_with_errors
     else
-      set_vote(-1) 
+      set_vote(-1)
       respond_to_json
     end
   end
@@ -26,7 +26,7 @@ module Voted
   def cancel_vote
     if current_user.voted_for?(@votable)
       @votable.votes.find_by(user: current_user).destroy
-      respond_to_json 
+      respond_to_json
     else
       respond_to_json_with_errors
     end
@@ -34,30 +34,30 @@ module Voted
 
   private
 
-    def model_klass
-      controller_name.classify.constantize
-    end
+  def model_klass
+    controller_name.classify.constantize
+  end
 
-    def load_votable
-      @votable = model_klass.find(params[:id])
-    end
+  def load_votable
+    @votable = model_klass.find(params[:id])
+  end
 
-    def set_vote(value)
-      @vote = @votable.votes.build
-      @vote.user = current_user
-      @vote.vote = value
-      @vote.save
-    end
+  def set_vote(value)
+    @vote = @votable.votes.build
+    @vote.user = current_user
+    @vote.vote = value
+    @vote.save
+  end
 
-    def respond_to_json_with_errors
-      respond_to do |format|
-        format.json { render json: { error: 'Ошибка!' } }
-      end
+  def respond_to_json_with_errors
+    respond_to do |format|
+      format.json { render json: { error: 'Ошибка!' } }
     end
+  end
 
-    def respond_to_json
-      respond_to do |format|
-        format.json { render json: @votable.votes.sum(:vote) }
-      end
+  def respond_to_json
+    respond_to do |format|
+      format.json { render json: @votable.votes.sum(:vote) }
     end
+  end
 end

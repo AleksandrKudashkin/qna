@@ -3,13 +3,17 @@ class AttachmentsController < ApplicationController
   before_action :find_attachment
 
   def destroy
-    if @attachment.attachable.user_id == current_user.id
-      @attachment.destroy ? flash[:warning] = 'Ваш файл удалён!' : flash.now[:danger] = 'Ошибка! Не удалось удалить Ваш файл!'
+    return unless current_user.author_of?(@attachment.attachable)
+    if @attachment.destroy
+      flash[:warning] = 'Your file has been deleted!'
+    else
+      flash.now[:danger] = 'Error! Your file has not been deleted!'
     end
   end
 
   private
-    def find_attachment
-      @attachment = Attachment.find(params[:id])
-    end
+
+  def find_attachment
+    @attachment = Attachment.find(params[:id])
+  end
 end

@@ -1,17 +1,17 @@
 require_relative 'feature_helper'
 
-feature 'Delete files from question', %q{
+feature 'Delete files from question', %q(
   In order to delete wrong attachments
   As an author of a question
   I want to be able to delete attached files
-} do
+) do
 
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given(:user2) { create(:user) }
   given(:answer) { create(:answer, user: user2, question: question) }
   given!(:attachment) { create(:attachment, attachable: answer) }
-    
+
   describe 'Author of answer logged in and' do
     background do
       sign_in(user2)
@@ -19,14 +19,14 @@ feature 'Delete files from question', %q{
     end
 
     scenario 'sees the links to delete files' do
-      within '.answers' do
-        expect(page).to have_link "Удалить файл", href: attachment_path(attachment)
+      within '.answers-body' do
+        expect(page).to have_link("delete-file-#{attachment.id}", href: attachment_path(attachment))
       end
     end
 
     scenario 'deletes his file', js: true do
       click_link "delete-file-#{attachment.id}"
-      within '.answers' do
+      within '.answers-body' do
         expect(page).to_not have_link attachment.file.identifier
       end
     end

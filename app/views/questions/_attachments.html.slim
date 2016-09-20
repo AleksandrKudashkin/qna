@@ -1,0 +1,11 @@
+i Attachments:
+p
+#attachments
+  .links
+    = link_to_add_association 'Add a file', f, :attachments
+  = f.fields_for :attachments do |a|
+    = render 'attachment_fields', f: a
+    
+br
+br
+= f.submit "Save", class: "btn btn-sm btn-primary"

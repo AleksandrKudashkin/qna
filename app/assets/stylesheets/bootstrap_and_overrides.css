@@ -14,8 +14,48 @@ body {
   margin-bottom: 80px;
   font-family: 'Open Serif', sans-serif;
 }
+hr {
+  border: 0;
+  height: 1px;
+  background: #333;
+  background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+.best-flag {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#best_answer {
+  font-size: 18pt;
+  color: green;
+  font-weight: bold;
+}
+.bg-warning {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+}
+li {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+div.question-rating, div.answer-rating {
+  text-align: center;
+}
+a.fa.fa-sort-asc, a.fa.fa-sort-desc, a.fa.fa-times {
+  text-decoration: none;
+  color: black;
+  font-size:18pt;
+}
+a.fa.fa-times#q-cancel-vote, div.answer-votes a.fa.fa-times {
+  color: maroon; 
+}
+span.q-rating, span.a-rating {
+  font-size: 18pt;
+}
 i.fa.fa-graduation-cap {
-  font-size: 16pt;
+  font-size: 18pt;
 }
 em.brand {
   font-family: 'Playfair Display', serif;

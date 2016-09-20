@@ -25,18 +25,17 @@ RSpec.describe Answer, type: :model do
     end
 
     context 'with the best answer' do
-      let!(:best_answer) { create(:answer, question: question, user: user, bestflag: true) }    
-    
+      let!(:best_answer) { create(:answer, question: question, user: user, bestflag: true) }
+
       it 'sets change the bestflag from old to new answer' do
-        
         @answer = answers.sample
         @answer.set_best
-        
+
         best_answer.reload
 
         expect(@answer.bestflag).to eq true
         expect(best_answer.bestflag).to eq false
-        expect(question.answers.where("bestflag = true").count).to eq 1
+        expect(question.answers.where('bestflag = true').count).to eq 1
       end
     end
   end

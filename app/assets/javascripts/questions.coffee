@@ -11,20 +11,23 @@ ready = ->
     $('form#edit-question').show()
     
   $('a#q-vote-up').bind 'ajax:success', (e, data, status, xhr) ->
-    $('.vote-buttons').hide()
+    $('.vote-button-up').hide()
+    $('.vote-button-down').hide()
     $('.cancel-vote').show()
     rating = $.parseJSON(xhr.responseText)
     $('.q-rating').html(rating)
 
   $('a#q-vote-down').bind 'ajax:success', (e, data, status, xhr) ->
-    $('.vote-buttons').hide()
+    $('.vote-button-up').hide()
+    $('.vote-button-down').hide()
     $('.cancel-vote').show()
     rating = $.parseJSON(xhr.responseText)
     $('.q-rating').html(rating)
 
   $('a#q-cancel-vote').bind 'ajax:success', (e, data, status, xhr) ->
     $('.cancel-vote').hide()
-    $('.vote-buttons').show()
+    $('.vote-button-up').show()
+    $('.vote-button-down').show()
     rating = $.parseJSON(xhr.responseText)
     $('.q-rating').html(rating)
 

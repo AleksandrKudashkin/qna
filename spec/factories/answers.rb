@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :answer do
     question nil
-    sequence(:body) { |n| "Read the following manual#{n}" } 
+    sequence(:body) { |n| "Read the following manual#{n}" }
     user nil
     bestflag false
   end

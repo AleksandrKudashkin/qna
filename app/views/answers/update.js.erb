@@ -3,5 +3,10 @@
     $('.edit_answer_<%= @answer.id%>').html('<div class="alert alert-danger"><%= j msg %></div>').delay(1000).fadeOut(400);
   <% end %>
 <% else %>
-  $('.answers').html('<%= j render @answers %>');
+  $('.new_answer_info').html('<%= j render 'notice' %>').show();
+  <% if @answers.count == 1 %>
+    $('.answers').append('<%= j render "questions/answers_header", answers: @answer %>');
+  <% else %>
+    $('.answers-body').html('<%= j render @answers %>');
+  <% end %>
 <% end %> 

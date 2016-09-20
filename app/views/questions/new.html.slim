@@ -1,23 +1,12 @@
 = form_for @question do |f|
-  = f.label :title, 'Заголовок:'
-  br
-  = f.text_field :title
-  p
-  = f.label :body, 'Опишите свой вопрос подробнее:'
-  br
-  = f.text_area :body, size: "60x12"
+  .form-group
+    = f.label :title, 'Title:'
+    = f.text_field :title, class: "form-control"
+  .form-group
+    = f.label :body, 'Description:'
+    = f.text_area :body, size: "60x12", class: "form-control"
   p 
-  i Вложения:
-  p
-  #attachments
-    .links
-      = link_to_add_association 'Добавить файл', f, :attachments
-    = f.fields_for :attachments do |a|
-      = render 'attachment_fields', f: a
-      
-  p
-  = f.submit "Сохранить"
-
+  = render 'attachments', f:f
 br
 br
-=link_to "К списку вопросов", questions_path, class: 'btn btn-default'
+=link_to "To question index", questions_path, class: 'btn btn-sm btn-default'

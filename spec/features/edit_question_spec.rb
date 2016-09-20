@@ -4,19 +4,17 @@ feature 'Question editing', %q{
   In order to edit my Question
   As an authenticated user and author of the Question
   I want to be able to edit question (title and body)
-} do 
-  
+} do
+
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
   scenario 'Non-authenticated user tries to edit a question' do
-
     visit question_path(question)
 
     within '.question' do
-      expect(page).to_not have_link 'Редактировать'  
+      expect(page).to_not have_link 'Edit'
     end
-
   end
 
   describe 'Authenticated user' do
@@ -31,7 +29,7 @@ feature 'Question editing', %q{
       visit question_path(question)
 
       within '.question' do
-        expect(page).to have_link 'Редактировать'  
+        expect(page).to have_link 'Edit'
       end
     end
 
@@ -39,26 +37,26 @@ feature 'Question editing', %q{
       visit question_path(question)
 
       within '.question' do
-        expect(page).to_not have_content 'Заголовок:'
-        expect(page).to_not have_content 'Опишите свой вопрос подробнее:'
+        expect(page).to_not have_content 'Title:'
+        expect(page).to_not have_content 'Description:'
       end
     end
 
     scenario 'does not see the link to edit not his question' do
       visit question_path(question2)
       within '.question' do
-        expect(page).to_not have_link 'Редактировать'  
+        expect(page).to_not have_link 'Edit'
       end
     end
 
     scenario 'can edit his question', js: true do
       visit question_path(question)
       within '.question' do
-        click_on 'Редактировать'
-      
-        fill_in 'Заголовок:', with: 'Edited title'
-        fill_in 'Опишите свой вопрос подробнее:', with: 'Edited body'
-        click_on 'Сохранить'
+        click_on 'Edit'
+
+        fill_in 'Title:', with: 'Edited title'
+        fill_in 'Description:', with: 'Edited body'
+        click_on 'Save'
 
         expect(page).to have_content 'Edited title'
         expect(page).to have_content 'Edited body'

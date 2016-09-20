@@ -1,41 +1,46 @@
   h3
     = @question.title
-  p
-    = @question.body
-  div class="question-votes"
-    strong рейтинг: 
-    span.q-rating =@question.votes_sum
-    - if user_signed_in? && !current_user.author_of?(@question)
-      .cancel-vote style=('display:none' unless current_user.voted_for?(@question))
-        =link_to('',cancel_vote_question_path, method: :delete, class: 'fa fa-times',
-          id: 'q-cancel-vote', remote: true, data: { type: :json })
-      .vote-buttons style=('display:none' if current_user.voted_for?(@question))
-        =>link_to('',vote_up_question_path, method: :patch, class: 'fa fa-plus', 
-          id: 'q-vote-up', remote: true, data: { type: :json })
-        =link_to('',vote_down_question_path, method: :patch, class: 'fa fa-minus',
-          id: 'q-vote-down', remote: true, data: { type: :json })
+  hr
+  .row
+    .col-md-1.question-rating
+      .question-votes
+        - if user_signed_in? && !current_user.author_of?(@question)
+          .vote-button-up style=('display:none' if current_user.voted_for?(@question))
+            =link_to('',vote_up_question_path, method: :patch, class: 'fa fa-sort-asc', 
+              id: 'q-vote-up', remote: true, data: { type: :json })
+        span.q-rating =@question.votes_sum
+        - if user_signed_in? && !current_user.author_of?(@question)
+          .cancel-vote style=('display:none' unless current_user.voted_for?(@question))
+            br
+            =link_to('',cancel_vote_question_path, method: :delete, class: 'fa fa-times',
+              id: 'q-cancel-vote', remote: true, data: { type: :json })
+          .vote-button-down style=('display:none' if current_user.voted_for?(@question))
+            =link_to('',vote_down_question_path, method: :patch, class: 'fa fa-sort-desc',
+              id: 'q-vote-down', remote: true, data: { type: :json })
+    .col-md-11
+      p
+        = @question.body
 
-  - if @question.attachments.any?
-    b 
-    i Вложения:
-    ul
-      - @question.attachments.each do |a|
-        li id="file-#{a.id}"
-          = link_to(a.file.identifier, a.file.url)
-          = link_to('Удалить файл', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-danger', 
-            remote: true) if user_signed_in? && current_user.author_of?(@question)
+      - if @question.attachments.any?
+        strong 
+          em Attachments:
+        ul
+          - @question.attachments.each do |a|
+            li id="file-#{a.id}"
+              = link_to(a.file.identifier, a.file.url)
+              |&nbsp;&nbsp;&nbsp;
+              = link_to('delete', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-xs btn-danger', 
+                remote: true) if user_signed_in? && current_user.author_of?(@question)
 
-  br
-  - if user_signed_in? && current_user.author_of?(@question)
-      = link_to("Удалить вопрос ", @question, method: :delete)
-      = link_to(" Редактировать", '', class: 'edit-question-link', data: { question_id: @question.id })
-      = form_for @question, remote: true, html: { id: "edit-question" } do |f|
-        = f.label :title, 'Заголовок:'
-        br
-        = f.text_field :title
-        p
-        = f.label :body, 'Опишите свой вопрос подробнее:'
-        br
-        = f.text_area :body, size: "60x12"
-        p
-        = f.submit "Сохранить"
+      - if user_signed_in? && current_user.author_of?(@question)
+          => link_to "Edit", '', class: 'btn btn-xs btn-warning edit-question-link', data: { question_id: @question.id }
+          = link_to "Delete", @question, method: :delete, class: "btn btn-xs btn-danger"
+          = form_for @question, remote: true, html: { id: "edit-question" } do |f|
+            br
+            .form-group
+              = f.label :title, 'Title:'
+              = f.text_field :title, class: "form-control"
+            .form-group
+              = f.label :body, 'Description:'
+              = f.text_area :body, size: "60x12", class: "form-control"
+            = f.submit "Save", class: "btn btn-sm btn-primary"

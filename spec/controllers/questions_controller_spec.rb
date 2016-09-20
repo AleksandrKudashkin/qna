@@ -6,9 +6,9 @@ describe QuestionsController do
   let(:question) { create(:question, user: user) }
   let(:another_question) { create(:question, user: another_user) }
   let(:answers) { create_list(:answer, 2, question: question, user: user) }
-  let(:vote_up_request) { Proc.new { patch :vote_up, id: question, format: :json } }
-  let(:vote_down_request) { Proc.new { patch :vote_down, id: question, format: :json } }
-  
+  let(:vote_up_request) { proc { patch :vote_up, id: question, format: :json } }
+  let(:vote_down_request) { proc { patch :vote_down, id: question, format: :json } }
+
   before { sign_in(user) }
 
   describe 'GET #new' do
@@ -58,7 +58,7 @@ describe QuestionsController do
   end
 
   describe 'POST #create' do
-    let(:create_request) { Proc.new { |q| post :create, question: attributes_for(q) } }
+    let(:create_request) { proc { |q| post :create, question: attributes_for(q) } }
 
     context 'with valid object' do
       it 'saves the new question in the database' do
@@ -84,7 +84,7 @@ describe QuestionsController do
   end
 
   describe 'DELETE #destroy' do
-    let(:delete_request) { Proc.new { |q| delete :destroy, id: q } }
+    let(:delete_request) { proc { |q| delete :destroy, id: q } }
 
     it 'deletes the question of the user' do
       question
@@ -98,15 +98,17 @@ describe QuestionsController do
   end
 
   describe 'PATCH #update' do
-    let(:patch_request) { Proc.new { |attr, q=question| patch :update, id: q, question: attr, format: :js } }
-    
+    let(:patch_request) do
+      proc { |attr, q = question| patch :update, id: q, question: attr, format: :js }
+    end
+
     it 'assigns the requested question to @question' do
       patch_request.call(attributes_for(:question))
-      expect(assigns(:question)).to eq question     
+      expect(assigns(:question)).to eq question
     end
 
     it 'changes question attributes' do
-      patch_request.call({ title: 'New title', body: 'New body' })
+      patch_request.call(title: 'New title', body: 'New body')
       question.reload
       expect(question.title).to eq 'New title'
       expect(question.body).to eq 'New body'
@@ -126,11 +128,10 @@ describe QuestionsController do
   end
 
   describe 'PATCH#vote_up and PATCH#vote_down' do
-
     context 'author' do
       it 'should not add new vote to question, vote up' do
         vote_up_request.call
-        expect{ vote_up_request.call }.to_not change(question.votes, :count)
+        expect { vote_up_request.call }.to_not change(question.votes, :count)
       end
 
       it 'should not add new vote to question, vote down' do
@@ -138,7 +139,7 @@ describe QuestionsController do
         expect { vote_up_request.call }.to_not change(question.votes, :count)
       end
     end
-    
+
     context 'other_user' do
       before { sign_in(another_user) }
 
@@ -167,7 +168,9 @@ describe QuestionsController do
 
     it 'should delete vote from question' do
       vote_up_request.call
-      expect { delete :cancel_vote, id: question, format: :json }.to change(question.votes, :count).by(-1)
+      expect do
+        delete :cancel_vote, id: question, format: :json
+      end.to change(question.votes, :count).by(-1)
     end
   end
 end

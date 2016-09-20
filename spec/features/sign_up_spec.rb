@@ -13,7 +13,6 @@ feature 'User signs up', '
     fill_in 'Password confirmation', with: '12345678'
     click_on 'Register me!'
 
-
     expect(page).to have_content 'Welcome! You have signed up successfully.'
     expect(current_path).to eq root_path
   end

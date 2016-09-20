@@ -12,13 +12,19 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-
-    @answer.save ? flash[:success] = 'Ваш ответ сохранён!' : flash.now[:danger] = 'Ошибка! Не удалось сохранить Ваш ответ!'
+    if @answer.save
+      flash[:success] = 'Your answer has been saved!'
+    else
+      flash.now[:danger] = 'Error! The answer has not been saved!'
+    end
   end
 
   def destroy
-    if @answer.user_id == current_user.id
-      @answer.destroy ? flash[:notice] = 'Ваш ответ удалён!' : flash.now[:danger] = 'Ошибка! Не удалось удалить Ваш ответ!'
+    return unless current_user.author_of?(@answer)
+    if @answer.destroy
+      flash[:warning] = 'Your answer has been deleted'
+    else
+      flash.now[:danger] = 'Error! The answer has not been deleted!'
     end
   end
 
@@ -34,15 +40,15 @@ class AnswersController < ApplicationController
 
   private
 
-    def find_question
-      @question = Question.find(params[:question_id])
-    end
+  def find_question
+    @question = Question.find(params[:question_id])
+  end
 
-    def find_answer
-      @answer = Answer.find(params[:id])
-    end
+  def find_answer
+    @answer = Answer.find(params[:id])
+  end
 
-    def answer_params
-      params.require(:answer).permit(:body, attachments_attributes: [:file])
-    end
+  def answer_params
+    params.require(:answer).permit(:body, attachments_attributes: [:file])
+  end
 end

@@ -1,10 +1,10 @@
 require_relative 'feature_helper'
 
-feature 'View questions and answers', %q{
+feature 'View questions and answers', %q(
   In order to get information for my problem
   As an non-authenticated or authenticated user
   I want to be able to view the content of question and answers for it
-} do
+) do
 
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
@@ -19,10 +19,9 @@ feature 'View questions and answers', %q{
     expect(page).to have_content question.body
 
     answer.each { |a| expect(page).to have_content a.body }
- 
   end
 
-  scenario 'Non-authenticated user views a question with answers' do  
+  scenario 'Non-authenticated user views a question with answers' do
     visit question_path(question)
 
     expect(page).to have_content 'MyQuestionText'

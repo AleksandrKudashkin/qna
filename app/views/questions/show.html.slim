@@ -1,34 +1,20 @@
 .question
   = render @question
 
-- unless @question.answers.empty? 
-  br
-  br
-  h4 Ответы к вопросам:
-
-hr
 .answers
-  = render @answers
+- if @question.answers.any? 
+  = render "answers_header", answers: @answers
 
 - if user_signed_in?
   hr
   .new_answer_info
   = form_for [@question, @answer], remote: true do |f|
-    = f.label :body, 'Ваш ответ'
-    br
-    = f.text_area :body, size: "60x12"
+    .form-group
+      = f.label :body, 'Your answer:'
+      = f.text_area :body, size: "60x12", class: "form-control"
     p 
-    i Вложения:
-    p
-    #attachments
-    .links
-      = link_to_add_association 'Добавить файл', f, :attachments
-    = f.fields_for :attachments do |a|
-      = render 'attachment_fields', f: a
-    p
-    = f.submit "Сохранить"
+    = render 'attachments', f:f
 br
 br
-.btn.btn-default
-  = link_to "К списку вопросов", questions_path
+  = link_to "To questions index", questions_path, class: "btn btn-md btn-default"
  

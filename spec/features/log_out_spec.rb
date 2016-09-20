@@ -17,5 +17,4 @@ feature 'User log out', '
     expect(page).to have_content 'Signed out successfully.'
     expect(current_path).to eq root_path
   end
- 
 end
