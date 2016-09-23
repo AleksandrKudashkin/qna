@@ -10,14 +10,11 @@ Rails.application.routes.draw do
     end
   end
 
-  concern :commentable do
-    member do
-      post :add_comment
-    end
-  end
+  resources :questions, shallow: true, concerns: :votable do
+    resources :comments, only: [:create], defaults: { commentable: 'questions' }
 
-  resources :questions, concerns: [:votable, :commentable] do
-    resources :answers, only: [:create, :destroy, :update], concerns: [:votable, :commentable] do
+    resources :answers, only: [:create, :destroy, :update], concerns: :votable do
+      resources :comments, only: [:create], defaults: { commentable: 'answers' }
       member do
         patch 'best'
       end

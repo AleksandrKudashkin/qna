@@ -173,14 +173,4 @@ describe QuestionsController do
       end.to change(question.votes, :count).by(-1)
     end
   end
-
-  describe 'POST#add_comment' do
-    before { sign_in(user) }
-    
-    it 'should add a new comment to question' do
-      expect do
-        post :add_comment, id: question, comment: { body: 'New comment' }, format: :json
-      end.to change(question.comments, :count).by(1)
-    end
-  end
 end

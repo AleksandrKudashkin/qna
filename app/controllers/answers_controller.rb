@@ -1,10 +1,9 @@
 class AnswersController < ApplicationController
   include Voted
-  include Commented
 
   before_action :authenticate_user!
-  before_action :find_question
   before_action :find_answer, only: [:destroy, :update, :best]
+  before_action :find_question, only: [:create, :update, :best]
 
   def new
     @answer = @question.answers.new
@@ -30,19 +29,23 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params) if @answer.user_id == current_user.id
+    @answer.update(answer_params) if current_user.author_of?(@answer)
     @answers = @question.answers
   end
 
   def best
-    @answer.set_best if @question.user_id == current_user.id
+    @answer.set_best if current_user.author_of?(@question)
     @answers = @question.answers
   end
 
   private
 
   def find_question
-    @question = Question.find(params[:question_id])
+    if params[:question_id]
+      @question = Question.find(params[:question_id])
+    else 
+      @question = @answer.question
+    end
   end
 
   def find_answer

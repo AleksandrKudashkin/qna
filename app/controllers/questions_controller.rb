@@ -1,6 +1,5 @@
 class QuestionsController < ApplicationController
   include Voted
-  include Commented
 
   before_action :authenticate_user!, except: [:show, :index]
   before_action :find_question, only: [:show, :destroy, :update]
@@ -23,7 +22,7 @@ class QuestionsController < ApplicationController
     @question.user = current_user
 
     if @question.save
-      PrivatePub.publish_to "/questions/index", question: @question.to_json
+      PrivatePub.publish_to "/questions", question: @question.to_json
       flash[:success] = 'Your question has been created!'
       redirect_to @question
     else

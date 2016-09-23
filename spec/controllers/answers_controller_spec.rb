@@ -7,10 +7,10 @@ describe AnswersController do
   let(:answer) { create(:answer, question: question, user: user) }
   let(:other_answer) { create(:answer, question: question, user: other_user, bestflag: true) }
   let(:vote_up_request) do
-    proc { patch :vote_up, id: answer, question_id: question, format: :json }
+    proc { patch :vote_up, id: answer, question_id: question.id, format: :json }
   end
   let(:vote_down_request) do
-    proc { patch :vote_down, id: answer, question_id: question, format: :json }
+    proc { patch :vote_down, id: answer, question_id: question.id, format: :json }
   end
 
   before { sign_in(user) }
@@ -18,7 +18,7 @@ describe AnswersController do
   describe 'POST #create' do
     let(:create_request) do
       proc do |a, q = question|
-        post :create, answer: attributes_for(a), question_id: q, format: :js
+        post :create, answer: attributes_for(a), question_id: q.id, format: :js
       end
     end
 
@@ -49,14 +49,14 @@ describe AnswersController do
     it 'deletes the answer of the user' do
       answer
       expect do
-        delete :destroy, id: answer, question_id: question, format: :js
+        delete :destroy, id: answer, question_id: question.id, format: :js
       end.to change(question.answers, :count).by(-1)
     end
 
     it 'not deletes the answer of the other user' do
       other_answer
       expect do
-        delete :destroy, id: other_answer, question_id: question, format: :js
+        delete :destroy, id: other_answer, question_id: question.id, format: :js
       end.to_not change(question.answers, :count)
     end
   end
@@ -64,7 +64,7 @@ describe AnswersController do
   describe 'PATCH #update' do
     let(:patch_request) do
       proc do |attr, a = answer, q = question|
-        patch :update, id: a, question_id: q, answer: attr, format: :js
+        patch :update, id: a, question_id: q.id, answer: attr, format: :js
       end
     end
 
@@ -146,9 +146,9 @@ describe AnswersController do
     before { sign_in(other_user) }
 
     it 'should delete vote from question when already voted' do
-      patch :vote_up, id: answer, question_id: question, format: :json
+      patch :vote_up, id: answer, question_id: question.id, format: :json
       expect do
-        delete :cancel_vote, id: answer, question_id: question, format: :json
+        delete :cancel_vote, id: answer, question_id: question.id, format: :json
       end.to change(answer.votes, :count).by(-1)
     end
   end
@@ -158,29 +158,13 @@ describe AnswersController do
       answer
       other_answer
 
-      patch :best, id: answer, question_id: question, format: :js
+      patch :best, id: answer, question_id: question.id, format: :js
 
       answer.reload
       other_answer.reload
 
       expect(other_answer.bestflag).to eq false
       expect(answer.bestflag).to eq true
-    end
-  end
-
-  describe 'POST#add_comment' do
-    before { sign_in(user) }
-
-    it 'should add a new comment to question' do
-      question
-      answer
-      expect do
-        post :add_comment,
-             id: answer,
-             question_id: question,
-             comment: { body: 'New comment' },
-             format: :json
-      end.to change(answer.comments, :count).by(1)
     end
   end
 end

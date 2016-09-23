@@ -10,11 +10,10 @@
       = subscribe_to "/questions/#{@question.id}/comments"
     .q-comments-errors
     - if user_signed_in?
-      = form_for(@question.comments.new, 
-          url: add_comment_question_path, 
+      = form_for [@question, Comment.new],
           html: { class: "form-inline new-question-comment" }, 
           remote: true, 
-          data: { type: :json, commentable_id: @question.id }) do |f|
+          data: { type: :json, commentable_id: @question.id } do |f|
         .form-group
           = f.label :body, 'Enter a comment', class: "sr-only"
           = f.text_field :body, class: "form-control"

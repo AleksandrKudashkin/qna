@@ -13,9 +13,9 @@ ready = ->
   $('.new-question-comment').on 'ajax:success', (e, data, status, xhr) ->
     msg = $.parseJSON(xhr.responseText)
     if typeof msg['comment'] != 'undefined'
-       $('input#comment_body.form-control').val('')
-    #   $('.q-comments').append('<p>' + msg['comment'] + '</p>')
-       $('.q-comments-errors').html('')
+      $('input#comment_body.form-control').val('')
+    # $('.q-comments').append('<p>' + msg['comment'] + '</p>')
+      $('.q-comments-errors').html('')
     if typeof msg['error'] != 'undefined'
       $('.q-comments-errors').html('<font color=red>' + msg['error'] + '</font>')
 
@@ -43,9 +43,12 @@ ready = ->
   questionId = $('.q-comments').data('questionId')
   PrivatePub.subscribe '/questions/' + questionId + '/comments', (data, channel) ->
     comment = $.parseJSON(data['comment'])
-    $('.q-comments').append('<p>' + comment.body + '</p>')
+    if comment.commentable_type == 'Question'
+      $('.q-comments').append('<p>' + comment.body + '</p>')
+    if comment.commentable_type == 'Answer'
+      $('.a-comments-' + comment.commentable_id).append('<p>' + comment.body + '</p>')
 
-  PrivatePub.subscribe '/questions/index', (data, channel) ->
+  PrivatePub.subscribe '/questions', (data, channel) ->
     question = $.parseJSON(data['question'])
     html = '<h3><i class="fa fa-question-circle"></i><a href=/questions/' + question.id + '>' + question.title + '</a></h3><p>' + question.body + '</p>'
     $('.questions').append(html)

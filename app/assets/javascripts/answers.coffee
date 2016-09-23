@@ -14,7 +14,7 @@ ready = ->
     msg = $.parseJSON(xhr.responseText)
     if typeof msg['comment'] != 'undefined'
       $('.comment-body-' + answerId).val('')
-      $('.a-comments-' + answerId).append('<p>' + msg['comment'] + '</p>')
+      # $('.a-comments-' + answerId).append('<p>' + msg['comment'].body + '</p>')
       $('.a-comments-errors-' + answerId).html('')
     if typeof msg['error'] != 'undefined'
       $('.a-comments-errors-' + answerId).html('<font color=red>' + msg['error'] + '</font>')
