@@ -33,6 +33,10 @@ gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
 
+# responders
+gem 'responders'
+
+
 group :development do
   gem 'web-console', '~> 2.0'
 end
