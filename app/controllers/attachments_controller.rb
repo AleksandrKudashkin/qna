@@ -2,13 +2,11 @@ class AttachmentsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_attachment
 
+  respond_to :js
+
   def destroy
     return unless current_user.author_of?(@attachment.attachable)
-    if @attachment.destroy
-      flash[:warning] = 'Your file has been deleted!'
-    else
-      flash.now[:danger] = 'Error! Your file has not been deleted!'
-    end
+    respond_with(@attachment.destroy)
   end
 
   private

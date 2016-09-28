@@ -1,4 +1,4 @@
-require_relative 'feature_helper'
+require_relative '../feature_helper'
 
 feature 'Delete files from question', %q(
   In order to delete wrong attachments
