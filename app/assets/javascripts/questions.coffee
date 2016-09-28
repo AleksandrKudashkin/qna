@@ -1,7 +1,6 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-
 ready = ->
   $('form#edit-question').hide()
 
@@ -12,12 +11,14 @@ ready = ->
 
   $('.new-question-comment').on 'ajax:success', (e, data, status, xhr) ->
     msg = $.parseJSON(xhr.responseText)
-    if typeof msg['comment'] != 'undefined'
-      $('input#comment_body.form-control').val('')
-    # $('.q-comments').append('<p>' + msg['comment'] + '</p>')
-      $('.q-comments-errors').html('')
-    if typeof msg['error'] != 'undefined'
-      $('.q-comments-errors').html('<font color=red>' + msg['error'] + '</font>')
+    $('input#comment_body.form-control').val('')
+    $('.q-comments-errors').html('')
+
+  $('.new-question-comment').on "ajax:error", (evt, xhr, status, error) ->
+    errors = xhr.responseJSON.errors
+    $.each errors, (key,value) ->
+      property = key.charAt(0).toUpperCase() + key.slice(1)
+      $('.q-comments-errors').append '<font color=red>' + property + ' ' + value  + '</font>'
 
   $('a#q-vote-up').bind 'ajax:success', (e, data, status, xhr) ->
     $('.vote-button-up').hide()

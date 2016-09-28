@@ -12,12 +12,15 @@ ready = ->
   $('#new_answer_comment').on 'ajax:success', (e, data, status, xhr) ->
     answerId = $(this).data('commentableId')
     msg = $.parseJSON(xhr.responseText)
-    if typeof msg['comment'] != 'undefined'
-      $('.comment-body-' + answerId).val('')
-      # $('.a-comments-' + answerId).append('<p>' + msg['comment'].body + '</p>')
-      $('.a-comments-errors-' + answerId).html('')
-    if typeof msg['error'] != 'undefined'
-      $('.a-comments-errors-' + answerId).html('<font color=red>' + msg['error'] + '</font>')
+    $('.comment-body-' + answerId).val('')
+    # $('.a-comments-' + answerId).append('<p>' + msg['comment'].body + '</p>')
+
+  $('#new_answer_comment').on "ajax:error", (evt, xhr, status, error) ->
+    answerId = $(this).data('commentableId')
+    errors = xhr.responseJSON.errors
+    $.each errors, (key,value) ->
+      property = key.charAt(0).toUpperCase() + key.slice(1)
+      $('.a-comments-errors-' + answerId).html('<font color=red>' + property + ' ' + value + '</font>')
 
   $('a#a-vote-up').bind 'ajax:success', (e, data, status, xhr) ->
     answerId = $(this).data('answerId')

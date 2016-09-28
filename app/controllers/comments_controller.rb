@@ -1,15 +1,17 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_commentable
+  after_action :publish_comment, only: :create
+
+  respond_to :json
 
   def create
-    @comment = @commentable.comments.new(commentable_params.merge(user: current_user))
-    if @comment.save
-      PrivatePub.publish_to "/questions/#{question_id}/comments", comment: @comment.to_json
-      respond_to_json
-    else
-      respond_to_json_with_errors
-    end
+    respond_with(
+      @comment = @commentable.comments.create(
+        commentable_params.merge(user: current_user)
+      ),
+      location: polymorphic_path(@commentable)
+    )
   end
 
   private
@@ -19,8 +21,8 @@ class CommentsController < ApplicationController
   end
 
   def find_commentable
-    @commentable = commentable_name.classify
-                                   .constantize.find(params["#{commentable_name.singularize}_id".to_sym])
+    @commentable = commentable_name.classify.constantize
+                                   .find(params["#{commentable_name.singularize}_id".to_sym])
   end
 
   def commentable_name
@@ -31,15 +33,8 @@ class CommentsController < ApplicationController
     params.require(:comment).permit(:body)
   end
 
-  def respond_to_json
-    respond_to do |format|
-      format.json { render json: { comment: @comment } }
-    end
-  end
-
-  def respond_to_json_with_errors
-    respond_to do |format|
-      format.json { render json: { error: @comment.errors.full_messages.join(", ") } }
-    end
+  def publish_comment
+    return unless @comment.valid?
+    PrivatePub.publish_to("/questions/#{question_id}/comments", comment: @comment.to_json)
   end
 end
