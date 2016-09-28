@@ -3,61 +3,52 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:show, :index]
   before_action :find_question, only: [:show, :destroy, :update]
+  before_action :load_answers, only: :show
+  after_action :publish_question, only: :create
+
+  respond_to :js
 
   def new
-    @question = Question.new
+    respond_with(@question = Question.new)
   end
 
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = Answer.new
-    @answers = @question.answers
+    respond_with(@question)
   end
 
   def create
-    @question = Question.new(question_params)
-    @question.user = current_user
-
-    if @question.save
-      PrivatePub.publish_to "/questions", question: @question.to_json
-      flash[:success] = 'Your question has been created!'
-      redirect_to @question
-    else
-      flash.now[:danger] = 'Error! The question has not been created!'
-      render :new
-    end
+    respond_with(@question = Question.create(question_params.merge(user: current_user)))
   end
 
   def update
     return unless current_user.author_of?(@question)
-    if @question.update(question_params)
-      flash[:success] = 'Your question has been updated'
-    else
-      flash.now[:danger] = 'Error! The question has not been updated!'
-    end
+    @question.update(question_params)
+    respond_with(@question)
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      if @question.destroy
-        flash[:warning] = 'Your question has been deleted!'
-      else
-        flash.now[:danger] = 'Error! Your question has not been deleted!'
-      end
-    end
-    redirect_to questions_path
+    current_user.author_of?(@question) ? respond_with(@question.destroy) : redirect_to(@question)
   end
 
   private
 
-  def question_params
-    params.require(:question).permit(:title, :body, attachments_attributes: [:id, :file, :_destroy])
-  end
-
   def find_question
     @question = Question.find(params[:id])
+  end
+
+  def load_answers
+    @answers = @question.answers
+  end
+
+  def publish_question
+    PrivatePub.publish_to "/questions", question: @question.to_json if @question.valid?
+  end
+
+  def question_params
+    params.require(:question).permit(:title, :body, attachments_attributes: [:id, :file, :_destroy])
   end
 end

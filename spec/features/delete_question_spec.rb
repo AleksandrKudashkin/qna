@@ -19,7 +19,7 @@ feature 'Delete answer to a question', %q(
     click_on 'Delete'
 
     expect(current_path).to eq questions_path
-    expect(page).to have_content 'Your question has been deleted!'
+    expect(page).to have_content 'Question was successfully destroyed'
     expect(page).to_not have_content question.title
     expect(page).to_not have_content question.body
   end

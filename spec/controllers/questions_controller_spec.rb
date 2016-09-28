@@ -48,10 +48,6 @@ describe QuestionsController do
       expect(assigns(:answers)).to eq question.answers
     end
 
-    it 'creates a new Answer object' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
     it 'renders show view' do
       expect(response).to render_template :show
     end
