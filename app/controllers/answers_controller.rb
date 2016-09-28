@@ -4,52 +4,45 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_answer, only: [:destroy, :update, :best]
   before_action :find_question, only: [:create, :update, :best]
+  after_action :load_answers, only: :best
 
-  def new
-    @answer = @question.answers.new
-  end
+  respond_to :js
 
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-    if @answer.save
-      flash[:success] = 'Your answer has been saved!'
-    else
-      flash.now[:danger] = 'Error! The answer has not been saved!'
-    end
-  end
-
-  def destroy
-    return unless current_user.author_of?(@answer)
-    if @answer.destroy
-      flash[:warning] = 'Your answer has been deleted'
-    else
-      flash.now[:danger] = 'Error! The answer has not been deleted!'
-    end
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
-    @answers = @question.answers
+    return unless current_user.author_of?(@answer)
+    @answer.update(answer_params)
+    load_answers
+    respond_with(@answer)
+  end
+
+  def destroy
+    respond_with(@answer.destroy) if current_user.author_of?(@answer)
   end
 
   def best
     @answer.set_best if current_user.author_of?(@question)
-    @answers = @question.answers
   end
 
   private
 
   def find_question
-    if params[:question_id]
-      @question = Question.find(params[:question_id])
-    else 
-      @question = @answer.question
-    end
+    @question = if params[:question_id]
+                  Question.find(params[:question_id])
+                else
+                  @answer.question
+                end
   end
 
   def find_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def load_answers
+    @answers = @question.answers
   end
 
   def answer_params

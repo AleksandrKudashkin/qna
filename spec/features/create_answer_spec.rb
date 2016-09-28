@@ -18,7 +18,7 @@ feature 'Create answer to a question', %q(
     click_on 'Save'
 
     expect(current_path).to eq question_path(question)
-    expect(page).to have_content 'Your answer has been saved!'
+    expect(page).to have_content 'Answer was successfully created'
     expect(page).to have_content 'Read the following manual!'
 
     within '.new_answer' do
