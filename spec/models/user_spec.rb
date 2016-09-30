@@ -7,6 +7,7 @@ describe User do
   it { should have_many(:questions).dependent(:destroy) }
   it { should have_many(:votes).dependent(:destroy) }
   it { should have_many(:comments).dependent(:destroy) }
+  it { should have_many(:authorizations).dependent(:destroy) }
 
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
@@ -50,6 +51,73 @@ describe User do
     end
     it 'should return false if not author of the answer' do
       expect(other_user.author_of?(answer)).to be false
+    end
+  end
+
+  describe '.from_omniauth' do
+    let!(:user) { create(:user) }
+    let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123545') }
+
+    context 'user already has authorization' do
+      it 'returns the user' do
+        user.authorizations.create(provider: 'facebook', uid: '123545')
+        expect(User.from_omniauth(auth)).to eq user
+      end
+    end
+
+    context 'user has no authorization' do
+      context 'user already exists' do
+        let(:auth) do
+          OmniAuth::AuthHash.new(provider: 'facebook', uid: '123545',
+                                 info: { email: user.email })
+        end
+
+        it 'does not create a new user' do
+          expect { User.from_omniauth(auth) }.to_not change(User, :count)
+        end
+
+        it 'creates an authorization for user' do
+          expect { User.from_omniauth(auth) }.to change(user.authorizations, :count).by(1)
+        end
+
+        it 'creates an authorization with provider and uid' do
+          authorization = User.from_omniauth(auth).authorizations.first
+          expect(authorization.provider).to eq auth.provider
+          expect(authorization.uid).to eq auth.uid
+        end
+
+        it 'returns the user' do
+          expect(User.from_omniauth(auth)).to eq user
+        end
+      end
+
+      context 'user doesnt exists' do
+        let(:auth) do
+          OmniAuth::AuthHash.new(provider: 'facebook', uid: '123545',
+                                 info: { email: 'new@user.com' })
+        end
+
+        it 'creates a new user' do
+          expect { User.from_omniauth(auth) }.to change(User, :count).by(1)
+        end
+
+        it 'fills users email' do
+          user = User.from_omniauth(auth)
+          expect(user.email).to eq auth.info.email
+        end
+
+        it 'creates authorization for user' do
+          user = User.from_omniauth(auth)
+          expect(user.authorizations).to_not be_empty
+        end
+
+        it 'creates an authorization with provider and user id' do
+          authorization = User.from_omniauth(auth).authorizations.first
+
+          expect(authorization.provider).to eq auth.provider
+          expect(authorization.uid).to eq auth.uid
+        end
+      end
     end
   end
 end

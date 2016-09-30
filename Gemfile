@@ -36,6 +36,9 @@ gem 'thin'
 # responders
 gem 'responders'
 
+# OAuth
+gem 'omniauth'
+gem 'omniauth-facebook'
 
 group :development do
   gem 'web-console', '~> 2.0'
