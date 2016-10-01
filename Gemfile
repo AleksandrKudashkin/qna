@@ -39,6 +39,7 @@ gem 'responders'
 # OAuth
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 group :development do
   gem 'web-console', '~> 2.0'

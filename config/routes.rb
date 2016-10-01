@@ -24,6 +24,9 @@ Rails.application.routes.draw do
 
   root 'questions#index'
 
+  get '/terms', to: redirect('/terms.html')
+  get '/privacy', to: redirect('/privacy.html')
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
