@@ -58,6 +58,16 @@ describe User do
     let!(:user) { create(:user) }
     let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123545') }
 
+    context 'provider returns hash without email or invalid hash' do
+      it 'doesnt create a user' do
+        expect { User.from_omniauth(auth) }.to_not change(User, :count)
+      end
+
+      it 'returns nil' do
+        expect(User.from_omniauth(auth)).to be_nil
+      end
+    end
+
     context 'user already has authorization' do
       it 'returns the user' do
         user.authorizations.create(provider: 'facebook', uid: '123545')

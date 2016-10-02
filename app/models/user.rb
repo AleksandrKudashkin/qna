@@ -22,11 +22,13 @@ class User < ActiveRecord::Base
     authorization = Authorization.find_by(provider: auth.provider, uid: auth.uid.to_s)
     return authorization.user if authorization
 
+    return if !auth.try(:info, :email) || auth.info[:email].blank?
     email = auth.info[:email]
-    user = User.find_by(email: email)
-    unless user
+    user = User.find_or_create_by(email: email) do |u|
       password = Devise.friendly_token[0, 20]
-      user = User.create!(email: email, password: password, password_confirmation: password)
+      u.password = password
+      u.password_confirmation = password
+      u.email = email
     end
 
     user.authorizations.create(provider: auth.provider, uid: auth.uid)
