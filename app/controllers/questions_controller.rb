@@ -8,6 +8,8 @@ class QuestionsController < ApplicationController
 
   respond_to :js
 
+  authorize_resource
+
   def new
     respond_with(@question = Question.new)
   end

@@ -4,6 +4,8 @@ class AttachmentsController < ApplicationController
 
   respond_to :js
 
+  authorize_resource
+
   def destroy
     return unless current_user.author_of?(@attachment.attachable)
     respond_with(@attachment.destroy)

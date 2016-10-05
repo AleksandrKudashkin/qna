@@ -41,6 +41,9 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 
+# Authorization
+gem 'cancancan'
+
 group :development do
   gem 'web-console', '~> 2.0'
 end

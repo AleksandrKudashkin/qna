@@ -4,17 +4,18 @@
   .row
     .col-md-1.question-rating
       .question-votes
-        - if user_signed_in? && !current_user.author_of?(@question)
-          .vote-button-up style=('display:none' if current_user.voted_for?(@question))
+        - if can?(:vote_up, @question)
+          .vote-button-up style=('display:none' unless can?(:vote_up, @question))
             =link_to('',vote_up_question_path, method: :patch, class: 'fa fa-sort-asc', 
               id: 'q-vote-up', remote: true, data: { type: :json })
         span.q-rating =@question.votes_sum
-        - if user_signed_in? && !current_user.author_of?(@question)
-          .cancel-vote style=('display:none' unless current_user.voted_for?(@question))
+        - if can?(:vote_down, @question) || can?(:cancel_vote, @question)
+          .cancel-vote style=('display:none' unless can?(:cancel_vote, @question))
             br
             =link_to('',cancel_vote_question_path, method: :delete, class: 'fa fa-times',
               id: 'q-cancel-vote', remote: true, data: { type: :json })
-          .vote-button-down style=('display:none' if current_user.voted_for?(@question))
+        - if can?(:vote_down, @question)
+          .vote-button-down style=('display:none' unless can?(:vote_down, @question))
             =link_to('',vote_down_question_path, method: :patch, class: 'fa fa-sort-desc',
               id: 'q-vote-down', remote: true, data: { type: :json })
     .col-md-11
@@ -30,9 +31,9 @@
               = link_to(a.file.identifier, a.file.url)
               |&nbsp;&nbsp;&nbsp;
               = link_to('delete', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-xs btn-danger', 
-                remote: true) if user_signed_in? && current_user.author_of?(@question)
+                remote: true) if can?(:destroy, a) 
 
-      - if user_signed_in? && current_user.author_of?(@question)
+      - if can?(:update, @question) && can?(:destroy, @question)
           => link_to "Edit", '', class: 'btn btn-xs btn-warning edit-question-link', data: { question_id: @question.id }
           = link_to "Delete", @question, method: :delete, class: "btn btn-xs btn-danger"
           = form_for @question, remote: true, html: { id: "edit-question" } do |f|

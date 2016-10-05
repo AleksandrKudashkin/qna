@@ -9,7 +9,7 @@
       = render 'comments/comment', commentable: @question
       = subscribe_to "/questions/#{@question.id}/comments"
     .q-comments-errors
-    - if user_signed_in?
+    - if can?(:create, Comment)
       = form_for [@question, Comment.new],
           html: { class: "form-inline new-question-comment" }, 
           remote: true, 
@@ -27,7 +27,7 @@ hr
     = render @answers
 = subscribe_to "/questions/#{@question.id}/answers"
 
-- if user_signed_in?
+- if can?(:create, Answer)
   hr
   .new_answer_info
   = form_for [@question, @question.answers.build], remote: true do |f|
