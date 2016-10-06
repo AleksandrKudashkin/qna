@@ -41,7 +41,7 @@ div class="row answer-#{answer.id}"
               - if can?(:destroy, a)
                 = link_to('', a, method: :delete, id: "delete-file-#{a.id}", class: 'fa fa-trash-o btn btn-xs btn-danger', remote: true)
 
-    - if can?(:update, answer) && can?(:destroy, answer)
+    - if can?(:edit, answer) && can?(:destroy, answer)
       div class= "edit_answer_#{answer.id}" id="edit_answer_info"
       br
       => link_to "Edit", '', class: 'btn btn-xs btn-warning edit-answer-link', data: { answer_id: answer.id }

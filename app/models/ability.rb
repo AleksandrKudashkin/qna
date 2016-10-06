@@ -23,11 +23,11 @@ class Ability
     guest_abilities
 
     alias_action :create, :read, :update, :destroy, to: :crud
-    can :crud, [Question, Answer, Comment], user: user
+    can :crud, [Question, Answer, Comment], user_id: user.id
     can :create, Attachment, attachable: { user_id: user.id }
 
     can :destroy, Attachment do |attachment|
-      attachment.attachable.user_id == user.id
+      user.author_of?(attachment.attachable)
     end
 
     can :best, Answer, question: { user_id: user.id }

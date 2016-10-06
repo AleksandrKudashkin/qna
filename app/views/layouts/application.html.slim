@@ -36,7 +36,8 @@ html
     .container
       .row.well.well-lg
         .col-lg-12
-          = bootstrap_flash
+          .layout-errors
+            = bootstrap_flash
           = yield
 
     .footer

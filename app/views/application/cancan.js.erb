@@ -1,0 +1,5 @@
+<% if @error %>
+  var html = "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert'";
+  html = html + "aria-label='close'>&times</a><%= @error %></div>";
+  $('.layout-errors').append(html);
+<% end %>
