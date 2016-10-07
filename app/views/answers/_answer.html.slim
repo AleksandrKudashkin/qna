@@ -1,18 +1,17 @@
 div class="row answer-#{answer.id}"
   .col-md-1.answer-rating
     .answer-votes
-      - if can?(:vote_up, answer)
+      - if user_signed_in? && !current_user.author_of?(answer)
         div class="a-vote-button-up-#{answer.id}" style=('display:none' unless can?(:vote_up, answer))
           =>link_to('',vote_up_answer_path(answer), method: :patch, 
                    class: 'fa fa-sort-asc', 
                    id:"a-vote-up", remote: true, data: { type: :json, answer_id: answer.id })
       span class="a-rating" id="a-rating-#{answer.id}" =answer.votes_sum 
 
-      - if can?(:vote_down, answer) || can?(:cancel_vote, answer)
+      - if user_signed_in? && !current_user.author_of?(answer)
         div class="a-cancel-vote-#{answer.id}" style=('display:none' unless can?(:cancel_vote, answer))
           =link_to('',cancel_vote_answer_path(answer), method: :delete, 
             class: 'fa fa-times', id: 'a-cancel-vote', remote: true, data: { type: :json, answer_id: answer.id })
-      - if can?(:vote_down, answer)
         div class="a-vote-button-down-#{answer.id}" style=('display:none' unless can?(:vote_down, answer))
           =link_to('',vote_down_answer_path(answer), method: :patch,
                    class: 'fa fa-sort-desc',
@@ -41,7 +40,7 @@ div class="row answer-#{answer.id}"
               - if can?(:destroy, a)
                 = link_to('', a, method: :delete, id: "delete-file-#{a.id}", class: 'fa fa-trash-o btn btn-xs btn-danger', remote: true)
 
-    - if can?(:edit, answer) && can?(:destroy, answer)
+    - if can?(:update, answer) && can?(:destroy, answer)
       div class= "edit_answer_#{answer.id}" id="edit_answer_info"
       br
       => link_to "Edit", '', class: 'btn btn-xs btn-warning edit-answer-link', data: { answer_id: answer.id }
