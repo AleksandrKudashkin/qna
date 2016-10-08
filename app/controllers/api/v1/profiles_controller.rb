@@ -19,7 +19,6 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def profiles_without_current
-    return unless doorkeeper_token
-    @profiles = User.where.not(id: current_resource_owner.id)
+    @profiles = User.where.not(id: current_resource_owner.id) if current_resource_owner
   end
 end
