@@ -46,6 +46,9 @@ gem 'cancancan'
 
 # API
 gem 'doorkeeper'
+gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
 
 group :development do
   gem 'web-console', '~> 2.0'
