@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
   concern :votable do
@@ -27,6 +28,13 @@ Rails.application.routes.draw do
   get '/terms', to: redirect('/terms.html')
   get '/privacy', to: redirect('/privacy.html')
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles do
+        get :me, on: :collection
+      end
+    end
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

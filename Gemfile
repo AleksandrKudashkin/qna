@@ -44,8 +44,15 @@ gem 'omniauth-twitter'
 # Authorization
 gem 'cancancan'
 
+# API
+gem 'doorkeeper'
+
 group :development do
   gem 'web-console', '~> 2.0'
+end
+
+group :test do
+  gem 'json_spec'
 end
 
 group :development, :test do
@@ -56,7 +63,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
   gem 'launchy'
-  # gem 'capybara-webkit'
   gem 'poltergeist'
   gem 'database_cleaner'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
