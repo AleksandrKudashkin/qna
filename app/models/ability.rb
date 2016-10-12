@@ -25,6 +25,8 @@ class Ability
     alias_action :create, :read, :update, :destroy, to: :crud
     can :crud, [Question, Answer, Comment], user_id: user.id
     can :create, Attachment, attachable: { user_id: user.id }
+    can :read, User
+    can :me, User, user_id: user.id
 
     can :destroy, Attachment do |attachment|
       user.author_of?(attachment.attachable)
