@@ -2,12 +2,13 @@ require 'rails_helper'
 
 describe QuestionsController do
   let(:user) { create(:user) }
-  let(:another_user) { create(:user) }
+  let(:other_user) { create(:user) }
   let(:question) { create(:question, user: user) }
-  let(:another_question) { create(:question, user: another_user) }
+  let(:another_question) { create(:question, user: other_user) }
   let(:answers) { create_list(:answer, 2, question: question, user: user) }
   let(:vote_up_request) { proc { patch :vote_up, id: question, format: :json } }
   let(:vote_down_request) { proc { patch :vote_down, id: question, format: :json } }
+  let(:cancel_vote_request) { proc { delete :cancel_vote, id: question, format: :json } }
 
   before { sign_in(user) }
 
@@ -57,9 +58,7 @@ describe QuestionsController do
     let(:create_request) { proc { |q| post :create, question: attributes_for(q) } }
 
     context 'with valid object' do
-      it 'saves the new question in the database' do
-        expect { create_request.call(:question) }.to change(Question, :count).by(1)
-      end
+      it_behaves_like "count changing", Question
 
       it 'redirects to show this question view' do
         create_request.call(:question)
@@ -68,14 +67,8 @@ describe QuestionsController do
     end
 
     context 'with invalid object' do
-      it 'does not save the question' do
-        expect { create_request.call(:invalid_question) }.to_not change(Question, :count)
-      end
-
-      it 're-renders template with form for new question' do
-        create_request.call(:invalid_question)
-        expect(response).to render_template :new
-      end
+      it_behaves_like "count not changing", Question
+      it_behaves_like 'rendering template for invalid', :invalid_question, :new
     end
   end
 
@@ -97,76 +90,12 @@ describe QuestionsController do
     let(:patch_request) do
       proc { |attr, q = question| patch :update, id: q, question: attr, format: :js }
     end
+    let(:other_subject) { another_question }
+    subject { question }
 
-    it 'assigns the requested question to @question' do
-      patch_request.call(attributes_for(:question))
-      expect(assigns(:question)).to eq question
-    end
-
-    it 'changes question attributes' do
-      patch_request.call(title: 'New title', body: 'New body')
-      question.reload
-      expect(question.title).to eq 'New title'
-      expect(question.body).to eq 'New body'
-    end
-
-    it 'renders update template' do
-      patch_request.call(attributes_for(:question))
-      expect(response).to render_template :update
-    end
-
-    it 'not edites the answer of the other user' do
-      patch_request.call({ title: 'New title', body: 'New body' }, another_question)
-      another_question.reload
-      expect(another_question.title).to_not eq 'New title'
-      expect(another_question.body).to_not eq 'New body'
-    end
+    it_behaves_like 'patchable', :question, title: 'New title', body: 'New body'
   end
 
-  describe 'PATCH#vote_up and PATCH#vote_down' do
-    context 'author' do
-      it 'should not add new vote to question, vote up' do
-        vote_up_request.call
-        expect { vote_up_request.call }.to_not change(question.votes, :count)
-      end
-
-      it 'should not add new vote to question, vote down' do
-        vote_up_request.call
-        expect { vote_up_request.call }.to_not change(question.votes, :count)
-      end
-    end
-
-    context 'other_user' do
-      before { sign_in(another_user) }
-
-      it 'should add new vote to question, vote up' do
-        expect { vote_up_request.call }.to change(question.votes, :count).by(1)
-      end
-
-      it 'should add new vote to question, vote down' do
-        expect { vote_down_request.call }.to change(question.votes, :count).by(1)
-      end
-
-      it 'should not add new vote to question if this user has already voted, vote up' do
-        vote_up_request.call
-        expect { vote_up_request.call }.to_not change(question.votes, :count)
-      end
-
-      it 'should not add new vote to question if this user has already voted, vote down' do
-        vote_up_request.call
-        expect { vote_down_request.call }.to_not change(question.votes, :count)
-      end
-    end
-  end
-
-  describe 'DELETE#cancel_vote' do
-    before { sign_in(another_user) }
-
-    it 'should delete vote from question' do
-      vote_up_request.call
-      expect do
-        delete :cancel_vote, id: question, format: :json
-      end.to change(question.votes, :count).by(-1)
-    end
-  end
+  subject { question }
+  it_behaves_like 'votable'
 end
