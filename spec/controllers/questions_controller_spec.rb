@@ -64,11 +64,21 @@ describe QuestionsController do
         create_request.call(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
+
+      it 'publishes question' do
+        expect(PrivatePub).to receive(:publish_to).with('/questions', hash_including(:question))
+        create_request.call(:question)
+      end
     end
 
     context 'with invalid object' do
       it_behaves_like "count not changing", Question
       it_behaves_like 'rendering template for invalid', :invalid_question, :new
+
+      it 'not publishes question' do
+        expect(PrivatePub).to_not receive(:publish_to).with('/questions', hash_including(:question))
+        create_request.call(:invalid_question)
+      end
     end
   end
 

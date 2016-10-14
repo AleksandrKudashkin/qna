@@ -52,8 +52,8 @@ describe 'Questions API' do
                created_at: 2.days.ago)
       end
       let!(:comment) { create(:comment, user: create(:user), commentable: question) }
-      let!(:attachment2) { create(:attachment2, attachable: question, created_at: 2.days.ago) }
       let!(:attachment) { create(:attachment, attachable: question) }
+      let!(:attachment2) { create(:attachment2, attachable: question) }
 
       subject { question }
       let(:prefix) { 'question/' }
@@ -74,7 +74,7 @@ describe 'Questions API' do
       end
 
       context 'attachments' do
-        subject { attachment }
+        subject { attachment2 }
         let(:prefix) { 'question/attachments/0/' }
 
         it_behaves_like "Having list of", "attachments", 2, 'question/'
