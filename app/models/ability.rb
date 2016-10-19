@@ -27,6 +27,12 @@ class Ability
     can :create, Attachment, attachable: { user_id: user.id }
     can :read, User
     can :me, User, user_id: user.id
+    can :subscribe, Question do |q|
+      !user.subscribed_to?(q)
+    end
+    can :unsubscribe, Question do |q|
+      user.subscribed_to?(q)
+    end
 
     can :destroy, Attachment do |attachment|
       user.author_of?(attachment.attachable)

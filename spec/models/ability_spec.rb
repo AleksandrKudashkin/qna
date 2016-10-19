@@ -17,7 +17,7 @@ describe Ability do
   describe 'for author' do
     let(:user) { create(:user) }
     let(:other) { create(:user) }
-    let(:question) { create(:question, user: user) }
+    let!(:question) { create(:question, user: user) }
     let(:other_question) { create(:question, user: other) }
     let(:answer) { create(:answer, question: question, user: user) }
     let(:other_answer) { create(:answer, question: question, user: other) }
@@ -62,6 +62,11 @@ describe Ability do
     it { should_not be_able_to :vote_up, question }
     it { should be_able_to :vote_down, other_answer }
     it { should_not be_able_to :vote_down, answer }
+
+    it { should_not be_able_to :subscribe, question }
+    it { should be_able_to :subscribe, other_question }
+    it { should be_able_to :unsubscribe, question }
+    it { should_not be_able_to :unsubscribe, other_question }
 
     it 'should be able to cancel vote on question' do
       question_vote

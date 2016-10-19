@@ -8,11 +8,30 @@ describe User do
   it { should have_many(:votes).dependent(:destroy) }
   it { should have_many(:comments).dependent(:destroy) }
   it { should have_many(:authorizations).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
 
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:question) { create(:question, user: user) }
   let(:answer) { create(:answer, question: question, user: user) }
+
+  describe '#subscribed_to?' do
+    let(:question_subscription) { create(:subscription, user: other_user, question: question) }
+
+    it 'return true if author' do
+      question
+      expect(user.subscribed_to?(question)).to be_truthy
+    end
+
+    it 'return false if not subscribed' do
+      expect(other_user.subscribed_to?(question)).to be_falsy
+    end
+
+    it 'return true if subscribed' do
+      question_subscription
+      expect(other_user.subscribed_to?(question)).to be_truthy
+    end
+  end
 
   describe '#voted_for?' do
     let(:question_vote) { create(:question_vote, votable_id: question.id, user: other_user) }

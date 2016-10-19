@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: [:show, :index]
-  before_action :find_question, only: [:show, :destroy, :update]
+  before_action :find_question, only: [:show, :destroy, :update, :subscribe, :unsubscribe]
   before_action :load_answers, only: :show
   after_action :publish_question, only: :create
 
@@ -36,10 +36,25 @@ class QuestionsController < ApplicationController
     current_user.author_of?(@question) ? respond_with(@question.destroy) : redirect_to(@question)
   end
 
+  def subscribe
+    authorize! :subscribe, @question
+    @subscription = current_user.subscriptions.build
+    @subscription.question = @question
+    @subscription.save
+  end
+
+  def unsubscribe
+    authorize! :unsubscribe, @question
+    @subscription = Subscription.where('user_id = ? AND question_id = ?',
+                                       current_user.id, @question.id).take
+    @subscription.destroy
+  end
+
   private
 
   def find_question
-    @question = Question.find(params[:id])
+    @question = Question.find(params[:id]) if params[:id]
+    @question = Question.find(params[:question_id]) if params[:question_id]
   end
 
   def load_answers

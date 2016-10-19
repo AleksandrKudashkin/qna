@@ -6,6 +6,10 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require "cancan/matchers"
+require 'capybara/email/rspec'
+require 'sidekiq/testing'
+
+Sidekiq::Testing.fake!
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
@@ -41,7 +45,7 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
   config.include(OmniauthMacros)
-      
+
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

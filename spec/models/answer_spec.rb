@@ -38,4 +38,12 @@ describe Answer do
       expect(question.answers.where('bestflag = true').count).to eq 1
     end
   end
+
+  describe '#notify_subscribers_of_question' do
+    let(:user) { create(:user) }
+    it 'invokes NewAnswerJob perform_later method' do
+      expect(NewAnswerJob).to receive(:perform_later).with(instance_of(Answer)).and_call_original
+      Answer.create(question: question, user: user, body: 'New answer')
+    end
+  end
 end

@@ -14,10 +14,18 @@ class Answer < ActiveRecord::Base
 
   default_scope { order(bestflag: :desc) }
 
+  after_create :notify_subscribers_of_question
+
   def set_best
     transaction do
       question.answers.update_all(bestflag: false)
       update!(bestflag: true)
     end
+  end
+
+  private
+
+  def notify_subscribers_of_question
+    NewAnswerJob.perform_later(self)
   end
 end

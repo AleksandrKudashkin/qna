@@ -1,0 +1,8 @@
+p 
+  |Hello, dear user! Theese are the questions that has been created during last 24 hours. See, if you can help people find their answers!
+
+-@questions.each do |q|
+  =link_to q.title, question_url(q)
+  br
+  =q.body.truncate(20)
+

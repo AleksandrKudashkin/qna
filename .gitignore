@@ -13,6 +13,8 @@
 database.yml
 doc/
 *.swp
+*.rdb
+dump.rdb
 *~
 .project
 .DS_Store

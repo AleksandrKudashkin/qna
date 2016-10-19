@@ -106,6 +106,28 @@ describe QuestionsController do
     it_behaves_like 'patchable', :question, title: 'New title', body: 'New body'
   end
 
+  describe 'PATCH #subscribe' do
+    it 'creates a subscription' do
+      expect do
+        patch :subscribe, question_id: another_question.id, format: :js
+      end.to change(another_question.subscribers, :count).by(1)
+    end
+
+    it 'does not changes subscriptions for author' do
+      expect do
+        patch :subscribe, question_id: question.id, formst: :js
+      end.to_not change(question.subscribers, :count)
+    end
+  end
+
+  describe 'DELETE #unsubscribe' do
+    it 'deletes a subscription' do
+      expect do
+        delete :unsubscribe, question_id: question.id, format: :js
+      end.to change(question.subscriptions, :count).by(-1)
+    end
+  end
+
   subject { question }
   it_behaves_like 'votable'
 end

@@ -1,0 +1,14 @@
+h3 A new answer notification
+- if @user.author_of?(@question)
+  p There is a new answer for you question:
+- else
+  p There is a new answer for the question you subscribed to:
+strong =@question.title
+hr
+p 
+strong Answer was:
+br
+=@answer.body
+p 
+  |You can view your question with all the answers
+  =<link_to 'here', question_url(@question)
