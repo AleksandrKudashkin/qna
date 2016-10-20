@@ -4,10 +4,10 @@
       span.subscribed-info style=('display:none' unless can?(:unsubscribe, @question))
         strong< subscribed!
       span.subscribe-button style=('display:none' unless can?(:subscribe, @question))
-        =< link_to('Subscribe', question_subscribe_path(@question), method: :patch, 
+        =< link_to('Subscribe', subscribe_question_path(@question), method: :patch, 
           class: 'btn btn-xs btn-info', id: 'create-subscription', remote: true)
       span.unsubscribe-button style=('display:none' unless can?(:unsubscribe, @question))
-        =< link_to('Unsubscribe', question_unsubscribe_path(@question), method: :delete, 
+        =< link_to('Unsubscribe', unsubscribe_question_path(@question), method: :delete, 
           class: 'btn btn-xs btn-warning', id: 'delete-subscription', remote: true)
   h3
     = @question.title

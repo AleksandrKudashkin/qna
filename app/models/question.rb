@@ -22,14 +22,11 @@ class Question < ActiveRecord::Base
   after_create :subscribe_author
 
   def subscribe(user)
-    @subscription = subscriptions.build
-    @subscription.user = user
-    @subscription.save
+    subscriptions.create!(user: user)
   end
 
   def unsubscribe(user)
-    @subscription = Subscription.find_by('user_id = ? AND question_id = ?', user.id, id)
-    @subscription.destroy
+    Subscription.find_by(user: user).destroy
   end
 
   private

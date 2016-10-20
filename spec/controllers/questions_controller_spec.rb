@@ -109,13 +109,13 @@ describe QuestionsController do
   describe 'PATCH #subscribe' do
     it 'creates a subscription' do
       expect do
-        patch :subscribe, question_id: another_question.id, format: :js
+        patch :subscribe, id: another_question.id, format: :js
       end.to change(another_question.subscribers, :count).by(1)
     end
 
     it 'does not changes subscriptions for author' do
       expect do
-        patch :subscribe, question_id: question.id, format: :js
+        patch :subscribe, id: question.id, format: :js
       end.to_not change(question.subscribers, :count)
     end
   end
@@ -123,7 +123,7 @@ describe QuestionsController do
   describe 'DELETE #unsubscribe' do
     it 'deletes a subscription' do
       expect do
-        delete :unsubscribe, question_id: question.id, format: :js
+        delete :unsubscribe, id: question.id, format: :js
       end.to change(question.subscriptions, :count).by(-1)
     end
   end

@@ -47,8 +47,7 @@ class QuestionsController < ApplicationController
   private
 
   def find_question
-    @question = Question.find(params[:id]) if params[:id]
-    @question = Question.find(params[:question_id]) if params[:question_id]
+    @question = Question.find(params[:id])
   end
 
   def load_answers
