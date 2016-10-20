@@ -14,7 +14,7 @@ describe Question do
   it { should accept_nested_attributes_for :attachments }
   it { should have_many(:subscriptions).dependent(:destroy) }
 
-  describe '.last24h' do
+  describe 'scope .last24h' do
     let(:old_question) { create(:question, created_at: 2.days.ago, user: create(:user)) }
     let(:questions) { create_list(:question, 2, created_at: 1.day.ago, user: create(:user)) }
 
@@ -29,10 +29,31 @@ describe Question do
 
   describe '#subscribe_author' do
     let(:user) { create(:user) }
-    it 'subscribes author to receive notifications' do
+
+    it 'auto subscribes to receive notifications after creation' do
       expect do
         Question.create(user: user, title: 'My new title', body: 'My new body')
       end.to change(user.subscriptions, :count).by(1)
+    end
+  end
+
+  describe '#subscribe' do
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+
+    it 'subscribes user to receive notification' do
+      question
+      expect { question.subscribe(other_user) }.to change(other_user.subscriptions, :count).by(1)
+    end
+  end
+
+  describe '#unsubscribe' do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, user: user) }
+
+    it 'removes subscription from user' do
+      expect { question.unsubscribe(user) }.to change(user.subscriptions, :count).by(-1)
     end
   end
 end

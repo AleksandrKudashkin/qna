@@ -37,17 +37,11 @@ class QuestionsController < ApplicationController
   end
 
   def subscribe
-    authorize! :subscribe, @question
-    @subscription = current_user.subscriptions.build
-    @subscription.question = @question
-    @subscription.save
+    @question.subscribe(current_user)
   end
 
   def unsubscribe
-    authorize! :unsubscribe, @question
-    @subscription = Subscription.where('user_id = ? AND question_id = ?',
-                                       current_user.id, @question.id).take
-    @subscription.destroy
+    @question.unsubscribe(current_user)
   end
 
   private

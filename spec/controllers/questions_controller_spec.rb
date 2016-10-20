@@ -115,7 +115,7 @@ describe QuestionsController do
 
     it 'does not changes subscriptions for author' do
       expect do
-        patch :subscribe, question_id: question.id, formst: :js
+        patch :subscribe, question_id: question.id, format: :js
       end.to_not change(question.subscribers, :count)
     end
   end

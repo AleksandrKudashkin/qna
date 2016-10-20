@@ -15,17 +15,26 @@ class Question < ActiveRecord::Base
 
   accepts_nested_attributes_for :attachments, allow_destroy: true
 
+  scope :last24h, -> do
+    Question.where(created_at: (Time.zone.now.midnight - 1.day)..Time.zone.now.midnight)
+  end
+
   after_create :subscribe_author
 
-  def self.last24h
-    Question.where(created_at: (Time.zone.now.midnight - 1.day)..Time.zone.now.midnight)
+  def subscribe(user)
+    @subscription = subscriptions.build
+    @subscription.user = user
+    @subscription.save
+  end
+
+  def unsubscribe(user)
+    @subscription = Subscription.find_by('user_id = ? AND question_id = ?', user.id, id)
+    @subscription.destroy
   end
 
   private
 
   def subscribe_author
-    @subscription = subscriptions.build
-    @subscription.user = user
-    @subscription.save
+    subscribe(user)
   end
 end

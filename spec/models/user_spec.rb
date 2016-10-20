@@ -18,18 +18,13 @@ describe User do
   describe '#subscribed_to?' do
     let(:question_subscription) { create(:subscription, user: other_user, question: question) }
 
-    it 'return true if author' do
-      question
-      expect(user.subscribed_to?(question)).to be_truthy
-    end
-
     it 'return false if not subscribed' do
-      expect(other_user.subscribed_to?(question)).to be_falsy
+      expect(other_user).to_not be_subscribed_to(question)
     end
 
     it 'return true if subscribed' do
       question_subscription
-      expect(other_user.subscribed_to?(question)).to be_truthy
+      expect(other_user).to be_subscribed_to(question)
     end
   end
 

@@ -4,7 +4,7 @@ class NewAnswerJob < ActiveJob::Base
   def perform(answer)
     @subscribers = answer.question.subscribers
     @subscribers.find_each do |user|
-      QuestionMailer.new_answer(user, answer).deliver_now
+      QuestionMailer.new_answer(user, answer).deliver_later
     end
   end
 end
