@@ -1,0 +1,20 @@
+h3 Search results
+hr
+=> pluralize(@results.count, 'result')
+  | found:
+- @results.each do |result|
+  h4 
+    - if result.respond_to?(:title) || result.respond_to?(:body)
+      br
+      | Found 
+      =<> link_to('here', find_question(result))
+      | : 
+    =< "#{result.class.to_s} #{result.id}:"
+  p
+  - if result.respond_to?(:title)
+    h5 = result.title
+  - elsif result.respond_to?(:email)
+    h5 = result.email
+
+  = result.body if result.respond_to?(:body)
+  br

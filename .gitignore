@@ -23,3 +23,8 @@ dump.rdb
 .rubocop.yml
 rubocop_pre_commit_hook.rb
 /public/uploads
+
+# sphinx
+config/*.sphinx.conf
+db/sphinx
+*.pid

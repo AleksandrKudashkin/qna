@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   resources :attachments, only: [:destroy]
 
   root 'questions#index'
-
+  get '/search', to: 'searches#search'
   get '/terms', to: redirect('/terms.html')
   get '/privacy', to: redirect('/privacy.html')
 
