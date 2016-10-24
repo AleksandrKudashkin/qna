@@ -59,9 +59,17 @@ gem 'whenever', :require => false
 gem 'mysql2'
 gem 'thinking-sphinx'
 
+# deploy
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
+
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'letter_opener'
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
 end
 
 group :test do
