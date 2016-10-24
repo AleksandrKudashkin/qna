@@ -25,50 +25,6 @@ namespace :deploy do
   after :publishing, :restart
 end
 
-# namespace :thinking_sphinx do
-#   desc 'Start searchd'
-#   task :start do
-#     on roles(:app) do
-#       within current_path do
-#         with rails_env: fetch(:rails_env) do
-#           execute :bundle, "exec rake ts:start"
-#         end
-#       end
-#     end
-#   end
-
-#   task :stop do
-#     on roles(:app) do
-#       within current_path do
-#         with rails_env: fetch(:rails_env) do
-#           execute :bundle, "exec rake ts:stop"
-#         end
-#       end
-#     end
-#   end
-
-  
-#   task :restart do
-#     on roles(:app) do
-#       within current_path do
-#         with rails_env: fetch(:rails_env) do
-#           execute :bundle, "exec rake ts:restart"
-#         end
-#       end
-#     end
-#   end
-
-#   task :rebuild do
-#     on roles(:app) do
-#       within current_path do
-#         with rails_env: fetch(:rails_env) do
-#           execute :bundle, "exec rake ts:rebuild"
-#         end
-#       end
-#     end
-#   end
-# end
-
 namespace :private_pub do 
   desc 'Start private_pub server'
   task :start do
@@ -103,3 +59,4 @@ namespace :private_pub do
 end
 
 after 'deploy:restart', 'private_pub:restart'
+after 'deploy:restart', 'thinking_sphinx:restart'
