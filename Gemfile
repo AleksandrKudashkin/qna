@@ -61,7 +61,8 @@ gem 'thinking-sphinx'
 
 # deploy
 gem 'dotenv'
-gem 'dotenv-deployment', require: 'dotenv/deployment'
+#gem 'dotenv-deployment', require: 'dotenv/deployment'
+gem 'dotenv-rails'
 gem 'therubyracer'
 
 group :development do
