@@ -1,16 +1,17 @@
-# Игнорирование конфига bundler
+# bundler
 /.bundle
 
-# Игнорирование дефолтной базы данных SQLite.
+# SQLite.
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
-# Игнорирование всех логов и временных файлов.
+# Logs.
 /log/*.log
 /tmp
 
-# Игнорирование прочих ненужных файлов.
+# Other files.
 database.yml
+private_pub.yml
 doc/
 *.swp
 *.rdb
@@ -20,8 +21,12 @@ dump.rdb
 .DS_Store
 .idea
 .secret
+
+# rubocop
 .rubocop.yml
 rubocop_pre_commit_hook.rb
+
+# public uploads
 /public/uploads
 
 # sphinx
