@@ -4,7 +4,6 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_answer, only: [:destroy, :update, :best]
   before_action :find_question, only: [:create, :update, :best]
-  after_action :load_answers, only: :best
 
   respond_to :js
 
@@ -27,6 +26,7 @@ class AnswersController < ApplicationController
 
   def best
     @answer.set_best if current_user.author_of?(@question)
+    load_answers
   end
 
   private

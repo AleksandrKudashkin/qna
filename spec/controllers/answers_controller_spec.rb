@@ -77,17 +77,17 @@ describe AnswersController do
   it_behaves_like 'votable'
 
   describe 'PATCH #best' do
+    before { patch :best, id: answer.id, format: :js }
+
     it 'allows only one best answer' do
-      answer
-      other_answer
-
-      patch :best, id: answer, question_id: question.id, format: :js
-
       answer.reload
       other_answer.reload
-
-      expect(other_answer.bestflag).to eq false
       expect(answer.bestflag).to eq true
+      expect(other_answer.bestflag).to eq false
+    end
+
+    it 'assigns answers with list of answers to a question' do
+      expect(assigns(:answers)).to match_array(question.answers)
     end
   end
 end
