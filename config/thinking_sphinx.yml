@@ -1,2 +1,7 @@
 test:
   mysql41: 9307
+production:
+  pid_file: tmp/pids/searchd.pid
+  indices_location: db/sphinx
+  configuration_file: config/production.sphinx.conf
+  binlog_path: log
