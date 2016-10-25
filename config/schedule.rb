@@ -1,3 +1,4 @@
+env :GEM_PATH, ENV['GEM_PATH']
 # env :PATH, ENV['PATH']
 # Use this file to easily define all of your cron jobs.
 #
@@ -14,7 +15,6 @@
 #   rake "some:great:rake:task"
 # end
 #
-set :job_template, nil
 
 every 1.day do
   runner "DailyDigestJob.perform_later"
