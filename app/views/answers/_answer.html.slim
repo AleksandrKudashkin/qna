@@ -57,7 +57,7 @@ div class="row answer-#{answer.id}"
         br
         em Comments:
         hr
-        div class="a-comments-#{answer.id}"
+        div class="a-comments-#{answer.id}" id="a-comments"
           = render 'comments/comment', commentable: answer
         div class="a-comments-errors-#{answer.id}"
         - if can?(:create, Comment)
