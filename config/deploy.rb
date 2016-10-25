@@ -9,10 +9,23 @@ set :deploy_to, "/home/deployer/qna"
 set :deploy_user, 'deployer'
 
 # Default value for :linked_files is []
-append :linked_files, 'config/database.yml', 'config/private_pub.yml', 'config/private_pub_thin.yml', '.env', 'config/production.sphinx.conf'
+append :linked_files,
+       'config/database.yml',
+       'config/private_pub.yml',
+       'config/private_pub_thin.yml',
+       '.env',
+       'config/production.sphinx.conf'
 
 # Default value for linked_dirs is []
-append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system', 'vendor/bundle', 'public/uploads', 'db/sphinx'
+append :linked_dirs,
+       'log',
+       'tmp/pids',
+       'tmp/cache',
+       'tmp/sockets',
+       'public/system',
+       'vendor/bundle',
+       'public/uploads',
+       'db/sphinx'
 # 'bin'
 
 namespace :deploy do
@@ -59,5 +72,5 @@ namespace :private_pub do
   end
 end
 
-after 'deploy:restart', 'private_pub:start'
+after 'deploy:restart', 'private_pub:restart'
 after 'deploy:restart', 'thinking_sphinx:restart'
