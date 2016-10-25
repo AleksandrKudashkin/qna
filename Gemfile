@@ -46,7 +46,7 @@ gem 'cancancan'
 
 # API
 gem 'doorkeeper'
-gem 'active_model_serializers', '~> 0.10.0'
+gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
 
