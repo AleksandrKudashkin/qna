@@ -61,9 +61,10 @@ gem 'thinking-sphinx'
 
 # deploy
 gem 'dotenv'
-#gem 'dotenv-deployment', require: 'dotenv/deployment'
 gem 'dotenv-rails'
 gem 'therubyracer'
+gem 'unicorn'
+
 
 group :development do
   gem 'web-console', '~> 2.0'
@@ -73,6 +74,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :test do
