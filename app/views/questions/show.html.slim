@@ -1,41 +1,43 @@
-.question
-  = render @question
-.row
-  .col-md-1
-  .col-md-11
-    em Comments:
-    hr
-    .q-comments data={question_id: "#{@question.id}"}
-      = render 'comments/comment', commentable: @question
-      = subscribe_to "/questions/#{@question.id}/comments"
-    .q-comments-errors
-    - if can?(:create, Comment)
-      = form_for [@question, Comment.new],
-          html: { class: "form-inline new-question-comment" }, 
-          remote: true, 
-          data: { type: :json, commentable_id: @question.id } do |f|
-        .form-group
-          = f.label :body, 'Enter a comment', class: "sr-only"
-          = f.text_field :body, class: "form-control"
-        = f.submit "Send", class: "btn btn-xs btn-primary"
-    
-br
-h4 Answers:
-hr
-.answers data={question_id: "#{@question.id}"}
-  - if @question.answers.any? 
-    = render @answers
-= subscribe_to "/questions/#{@question.id}/answers"
-
-- if can?(:create, Answer)
+- cache_unless user_signed_in?, @question do
+  .question
+    = render @question
+  .row
+    .col-md-1
+    .col-md-11
+      em Comments:
+      hr
+      .q-comments data={question_id: "#{@question.id}"}
+        = render 'comments/comment', commentable: @question
+      .q-comments-errors
+      - if can?(:create, Comment)
+        = form_for [@question, Comment.new],
+            html: { class: "form-inline new-question-comment" }, 
+            remote: true, 
+            data: { type: :json, commentable_id: @question.id } do |f|
+          .form-group
+            = f.label :body, 'Enter a comment', class: "sr-only"
+            = f.text_field :body, class: "form-control"
+          = f.submit "Send", class: "btn btn-xs btn-primary"
+      
+  br
+  h4 Answers:
   hr
-  .new_answer_info
-  = form_for [@question, @question.answers.build], remote: true do |f|
-    .form-group
-      = f.label :body, 'Your answer:'
-      = f.text_area :body, size: "60x12", class: "form-control"
-    p 
-    = render 'attachments', f:f
-br
-br
-  = link_to "To questions index", questions_path, class: "btn btn-md btn-default"
+  .answers data={question_id: "#{@question.id}"}
+    - if @question.answers.any? 
+      = render @answers
+
+  - if can?(:create, Answer)
+    hr
+    .new_answer_info
+    = form_for [@question, @question.answers.build], remote: true do |f|
+      .form-group
+        = f.label :body, 'Your answer:'
+        = f.text_area :body, size: "60x12", class: "form-control"
+      p 
+      = render 'attachments', f:f
+  br
+  br
+    = link_to "To questions index", questions_path, class: "btn btn-md btn-default"
+
+= subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to "/questions/#{@question.id}/comments"

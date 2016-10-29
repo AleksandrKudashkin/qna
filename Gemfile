@@ -65,6 +65,8 @@ gem 'dotenv-rails'
 gem 'therubyracer'
 gem 'unicorn'
 
+# caching
+gem 'redis-rails'
 
 group :development do
   gem 'web-console', '~> 2.0'

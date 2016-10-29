@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module StackOverflowClone
+module QnA
   class Application < Rails::Application
     # Use the responders controller from the responders gem
     config.app_generators.scaffold_controller :responders_controller
@@ -36,5 +36,7 @@ module StackOverflowClone
                        controller_specs: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
+
+    config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
   end
 end

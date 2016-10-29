@@ -1,72 +1,73 @@
-div class="row answer-#{answer.id}"
-  .col-md-1.answer-rating
-    .answer-votes
-      - if user_signed_in? && !current_user.author_of?(answer)
-        div class="a-vote-button-up-#{answer.id}" style=('display:none' unless can?(:vote_up, answer))
-          =>link_to('',vote_up_answer_path(answer), method: :patch, 
-                   class: 'fa fa-sort-asc', 
-                   id:"a-vote-up", remote: true, data: { type: :json, answer_id: answer.id })
-      span class="a-rating" id="a-rating-#{answer.id}" =answer.votes_sum 
+- cache_unless user_signed_in?, answer do
+  div class="row answer-#{answer.id}"
+    .col-md-1.answer-rating
+      .answer-votes
+        - if user_signed_in? && !current_user.author_of?(answer)
+          div class="a-vote-button-up-#{answer.id}" style=('display:none' unless can?(:vote_up, answer))
+            =>link_to('',vote_up_answer_path(answer), method: :patch, 
+                     class: 'fa fa-sort-asc', 
+                     id:"a-vote-up", remote: true, data: { type: :json, answer_id: answer.id })
+        span class="a-rating" id="a-rating-#{answer.id}" =answer.votes_sum 
 
-      - if user_signed_in? && !current_user.author_of?(answer)
-        div class="a-cancel-vote-#{answer.id}" style=('display:none' unless can?(:cancel_vote, answer))
-          =link_to('',cancel_vote_answer_path(answer), method: :delete, 
-            class: 'fa fa-times', id: 'a-cancel-vote', remote: true, data: { type: :json, answer_id: answer.id })
-        div class="a-vote-button-down-#{answer.id}" style=('display:none' unless can?(:vote_down, answer))
-          =link_to('',vote_down_answer_path(answer), method: :patch,
-                   class: 'fa fa-sort-desc',
-                   id:"a-vote-down", remote: true, data: { type: :json, answer_id: answer.id })
-  .col-md-1
-    .best-flag
-      - if answer.bestflag
-        span id="best_answer" class="fa fa-check"    
-      - else
-        - if can?(:best, answer)
-          = link_to "Best", best_answer_path(answer), method: :patch, remote: true, 
-                    class: 'btn btn-xs btn-default' 
-  .col-md-10.well.well-sm  
-    = answer.body
+        - if user_signed_in? && !current_user.author_of?(answer)
+          div class="a-cancel-vote-#{answer.id}" style=('display:none' unless can?(:cancel_vote, answer))
+            =link_to('',cancel_vote_answer_path(answer), method: :delete, 
+              class: 'fa fa-times', id: 'a-cancel-vote', remote: true, data: { type: :json, answer_id: answer.id })
+          div class="a-vote-button-down-#{answer.id}" style=('display:none' unless can?(:vote_down, answer))
+            =link_to('',vote_down_answer_path(answer), method: :patch,
+                     class: 'fa fa-sort-desc',
+                     id:"a-vote-down", remote: true, data: { type: :json, answer_id: answer.id })
+    .col-md-1
+      .best-flag
+        - if answer.bestflag
+          span id="best_answer" class="fa fa-check"    
+        - else
+          - if can?(:best, answer)
+            = link_to "Best", best_answer_path(answer), method: :patch, remote: true, 
+                      class: 'btn btn-xs btn-default' 
+    .col-md-10.well.well-sm  
+      = answer.body
 
-    - if answer.attachments.any?
-      div class="attachments-#{answer.id}" data-answer-id="#{answer.id}" 
-        br
-        strong
-          em Attachments:
-        ul
-          - answer.attachments.each do |a|
-            li id="file-#{a.id}"
-              = link_to a.file.identifier, a.file.url
-              |&nbsp;&nbsp;&nbsp;
-              - if can?(:destroy, a)
-                = link_to('', a, method: :delete, id: "delete-file-#{a.id}", class: 'fa fa-trash-o btn btn-xs btn-danger', remote: true)
+      - if answer.attachments.any?
+        div class="attachments-#{answer.id}" data-answer-id="#{answer.id}" 
+          br
+          strong
+            em Attachments:
+          ul
+            - answer.attachments.each do |a|
+              li id="file-#{a.id}"
+                = link_to a.file.identifier, a.file.url
+                |&nbsp;&nbsp;&nbsp;
+                - if can?(:destroy, a)
+                  = link_to('', a, method: :delete, id: "delete-file-#{a.id}", class: 'fa fa-trash-o btn btn-xs btn-danger', remote: true)
 
-    - if can?(:update, answer) && can?(:destroy, answer)
-      div class= "edit_answer_#{answer.id}" id="edit_answer_info"
-      br
-      => link_to "Edit", '', class: 'btn btn-xs btn-warning edit-answer-link', data: { answer_id: answer.id }
-      = link_to "Delete", answer, method: :delete, remote: true, class: "btn btn-xs btn-danger" 
-      = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+      - if can?(:update, answer) && can?(:destroy, answer)
+        div class= "edit_answer_#{answer.id}" id="edit_answer_info"
         br
-        .form-group
-          = f.label :body, 'Your answer:'
-          = f.text_area :body, size: "40x6", class: "form-control"
-        = f.submit "Save", class: "btn btn-xs btn-primary"
-    .row
-      .col-md-1
-      .col-md-11
-        br
-        em Comments:
-        hr
-        div class="a-comments-#{answer.id}" id="a-comments"
-          = render 'comments/comment', commentable: answer
-        div class="a-comments-errors-#{answer.id}"
-        - if can?(:create, Comment)
-          = form_for [answer, Comment.new], 
-              html: { class: "form-inline new-answer-comment-#{answer.id}",
-                      id: "new_answer_comment" }, 
-              remote: true, 
-              data: { type: :json, commentable_id: answer.id } do |f|
-            .form-group
-              = f.label :body, 'Enter a comment', class: "sr-only"
-              = f.text_field :body, class: "form-control comment-body-#{answer.id}"
-            = f.submit "Send", class: "btn btn-xs btn-primary"
+        => link_to "Edit", '', class: 'btn btn-xs btn-warning edit-answer-link', data: { answer_id: answer.id }
+        = link_to "Delete", answer, method: :delete, remote: true, class: "btn btn-xs btn-danger" 
+        = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+          br
+          .form-group
+            = f.label :body, 'Your answer:'
+            = f.text_area :body, size: "40x6", class: "form-control"
+          = f.submit "Save", class: "btn btn-xs btn-primary"
+      .row
+        .col-md-1
+        .col-md-11
+          br
+          em Comments:
+          hr
+          div class="a-comments-#{answer.id}" id="a-comments"
+            = render 'comments/comment', commentable: answer
+          div class="a-comments-errors-#{answer.id}"
+          - if can?(:create, Comment)
+            = form_for [answer, Comment.new], 
+                html: { class: "form-inline new-answer-comment-#{answer.id}",
+                        id: "new_answer_comment" }, 
+                remote: true, 
+                data: { type: :json, commentable_id: answer.id } do |f|
+              .form-group
+                = f.label :body, 'Enter a comment', class: "sr-only"
+                = f.text_field :body, class: "form-control comment-body-#{answer.id}"
+              = f.submit "Send", class: "btn btn-xs btn-primary"

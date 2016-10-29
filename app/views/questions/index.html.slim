@@ -1,11 +1,11 @@
 p
 =link_to "Ask a question", new_question_path, class: 'btn btn-success'
-p
-.questions
-  - @questions.each do |q|
-    h3
-      i> class="fa fa-question-circle"
-      = link_to q.title, q
-    p
-      = q.body
+- cache collection_cache_key_for :question do
+  .questions
+    - @questions.each do |q|
+      h3
+        i> class="fa fa-question-circle"
+        = link_to q.title, q
+      p
+        = q.body
 = subscribe_to "/questions"
