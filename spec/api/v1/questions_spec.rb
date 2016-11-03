@@ -98,7 +98,7 @@ describe 'Questions API' do
         create(:answer, question: question, created_at: 2.days.ago, user: create(:user))
       end
 
-      subject { answer }
+      subject { old_answer }
       let(:prefix) { 'answers/0/' }
 
       before do

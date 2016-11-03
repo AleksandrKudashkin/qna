@@ -13,6 +13,7 @@ class Answer < ActiveRecord::Base
   validates :user_id, presence: true
 
   default_scope { order(bestflag: :desc) }
+  default_scope { order(created_at: 'ASC') }
 
   after_create :notify_subscribers_of_question
 

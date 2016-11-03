@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
       u.password = password
       u.password_confirmation = password
       u.email = email
+      u.skip_confirmation!
     end
 
     user.authorizations.create(provider: auth.provider, uid: auth.uid)

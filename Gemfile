@@ -14,14 +14,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jquery-turbolinks'
 
-# Using Devise for authorization
-gem 'devise'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-# Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
 gem 'faker'
@@ -41,7 +36,8 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 
-# Authorization
+# Authentication and Authorization
+gem 'devise'
 gem 'cancancan'
 
 # API
@@ -69,6 +65,8 @@ gem 'unicorn'
 gem 'redis-rails'
 
 group :development do
+  gem 'spring'
+  gem 'spring-commands-rspec'
   gem 'web-console', '~> 2.0'
   gem 'letter_opener'
   gem 'capistrano', require: false
@@ -80,20 +78,14 @@ group :development do
 end
 
 group :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
   gem 'json_spec'
   gem 'capybara-email'
-end
-
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-  gem 'rspec-rails'
+  gem 'fuubar'
   gem 'capybara'
-  gem 'factory_girl_rails'
-  gem 'shoulda-matchers'
   gem 'launchy'
   gem 'poltergeist'
   gem 'database_cleaner'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
+  gem 'shoulda-matchers'
 end

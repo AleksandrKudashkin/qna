@@ -19,6 +19,8 @@ class Question < ActiveRecord::Base
     Question.where(created_at: (Time.zone.now.midnight - 1.day)..Time.zone.now.midnight)
   end
 
+  default_scope { order(created_at: 'ASC') }
+
   after_create :subscribe_author
 
   def subscribe(user)
