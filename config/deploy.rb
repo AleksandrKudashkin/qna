@@ -10,6 +10,7 @@ set :deploy_user, 'deployer'
 
 # Default value for :linked_files is []
 append :linked_files,
+       'config/secrets.yml',
        'config/database.yml',
        'config/private_pub.yml',
        'config/private_pub_thin.yml',

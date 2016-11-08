@@ -12,6 +12,7 @@
 # Other files.
 database.yml
 private_pub.yml
+secrets.yml
 doc/
 *.swp
 *.rdb

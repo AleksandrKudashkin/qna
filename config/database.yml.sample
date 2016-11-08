@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: qna_production
-  username: qna
-  password: <%= ENV['QNA_DATABASE_PASSWORD'] %>
+  database: production
+  username: user
+  password: <%= ENV['DATABASE_PASSWORD'] %>
