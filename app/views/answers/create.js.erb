@@ -4,10 +4,6 @@
   <% end %>
 <% else %>
   $('.new_answer_info').html('<%= j render 'notice' %>').show();
-
-  <% publish_to "/questions/#{@answer.question.id}/answers" do %>
-    $('.answers').append('<%= j render @answer %>');
-  <% end %>
-
+  $('.answers').append('<%= j render @answer %>');
   $('#new_answer').find('#answer_body').val('');
 <% end %> 

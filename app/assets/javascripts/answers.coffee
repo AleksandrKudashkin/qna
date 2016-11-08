@@ -9,13 +9,13 @@ ready = ->
     answerId = $(this).data('answerId')
     $('form#edit-answer-' + answerId).show()
 
-  $('#new_answer_comment').on 'ajax:success', (e, data, status, xhr) ->
+  $('.new-answer-comment').bind 'ajax:success', (e, data, status, xhr) ->
     answerId = $(this).data('commentableId')
     msg = $.parseJSON(xhr.responseText)
     $('.comment-body-' + answerId).val('')
-    # $('.a-comments-' + answerId).append('<p>' + msg['comment'].body + '</p>')
+    $('.a-comments-errors-' + answerId).html('')
 
-  $('#new_answer_comment').on "ajax:error", (evt, xhr, status, error) ->
+  $('.new-answer-comment').bind "ajax:error", (evt, xhr, status, error) ->
     answerId = $(this).data('commentableId')
     errors = xhr.responseJSON.errors
     $.each errors, (key,value) ->
