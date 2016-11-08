@@ -1,11 +1,19 @@
-p
-=link_to "Ask a question", new_question_path, class: 'btn btn-success'
-- cache collection_cache_key_for :question do
-  .questions
-    - @questions.each do |q|
-      h3
-        i> class="fa fa-question-circle"
-        = link_to q.title, q
-      p
-        = q.body
+.row
+  .col-md-12.text-center
+    h2 Welcome to Questions & Answers!
+.row
+  .col-md-12.text-center
+    =link_to "Ask a question", new_question_path, class: 'btn btn-success'
+p  
+hr
+.row
+  .col-md-12
+    - cache collection_cache_key_for :question do
+      .questions
+        - @questions.each do |q|
+          h3
+            i> class="fa fa-question-circle"
+            = link_to q.title, q
+          p
+            = q.body
 = subscribe_to "/questions"
