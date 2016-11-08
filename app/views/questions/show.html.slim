@@ -4,8 +4,9 @@
   .row
     .col-md-1
     .col-md-11
-      em Comments:
-      hr
+      - if @question.comments.any? || user_signed_in?
+        em Comments:
+        hr
       .q-comments data={question_id: "#{@question.id}"}
         = render 'comments/comment', commentable: @question
       .q-comments-errors
@@ -37,7 +38,7 @@
       = render 'attachments', f:f
   br
   br
-    = link_to "To questions index", questions_path, class: "btn btn-md btn-default"
+    = link_to "To questions list", questions_path, class: "btn btn-md btn-default"
 
 = subscribe_to "/questions/#{@question.id}/answers"
 = subscribe_to "/questions/#{@question.id}/comments"

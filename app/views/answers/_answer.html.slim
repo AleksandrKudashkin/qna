@@ -55,9 +55,10 @@
       .row
         .col-md-1
         .col-md-11
-          br
-          em Comments:
-          hr
+          - if answer.comments.any? || user_signed_in?
+            br
+            em Comments:
+            hr
           div class="a-comments-#{answer.id}" id="a-comments"
             = render 'comments/comment', commentable: answer
           div class="a-comments-errors-#{answer.id}"
