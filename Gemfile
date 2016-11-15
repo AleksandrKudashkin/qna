@@ -88,4 +88,5 @@ group :test do
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'shoulda-matchers'
+  gem 'rails-controller-testing'
 end

@@ -64,7 +64,8 @@
           div class="a-comments-errors-#{answer.id}"
           - if can?(:create, Comment)
             = form_for [answer, Comment.new], 
-                html: { class: "form-inline new-answer-comment" }, 
+              html: { class: "form-inline new-answer-comment", 
+                id: "new-answer-comment-#{answer.id}" }, 
                 remote: true, 
                 data: { type: :json, commentable_id: answer.id } do |f|
               .form-group

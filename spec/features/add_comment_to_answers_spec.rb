@@ -9,7 +9,7 @@ feature 'Add comment for answer', %q(
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
-  let(:new_answer_comment_selector) { ".new-answer-comment-#{answer.id}" }
+  let(:new_answer_comment_selector) { "#new-answer-comment-#{answer.id}" }
 
   describe "Non-authenticated user" do
     scenario "doesn't see the form to comment" do
@@ -29,18 +29,19 @@ feature 'Add comment for answer', %q(
     end
 
     scenario "leaves a comment", js: true do
-      within(".new-answer-comment-#{answer.id}") do
+      within(new_answer_comment_selector) do
         fill_in 'comment_body', with: "My first answer comment!"
         click_on "Send"
       end
+
       expect(page).to have_content("My first answer comment!")
-      within(".new-answer-comment-#{answer.id}") do
+      within(new_answer_comment_selector) do
         expect(find_field('comment[body]').value).to eq ''
       end
     end
 
     scenario "makes an invalid comment", js: true do
-      within(".new-answer-comment-#{answer.id}") do
+      within(new_answer_comment_selector) do
         fill_in 'comment_body', with: ''
         click_on "Send"
       end
