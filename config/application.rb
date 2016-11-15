@@ -1,5 +1,7 @@
-require File.expand_path('../boot', __FILE__)
+# from rails 4.2.7
+# require File.expand_path('../boot', __FILE__)
 
+require_relative 'boot'
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
