@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 # main
-ruby '2.2.5'
-gem 'rails', '4.2.7'
+ruby '2.3.2'
+gem 'rails', '~> 5.0'
 gem 'pg'
 
 # front-end
@@ -48,7 +48,7 @@ gem 'oj_mimic_json'
 
 # Background Jobs
 gem 'sidekiq'
-gem 'sinatra','>= 1.3.0', require: nil
+gem 'sinatra', require: nil
 gem 'whenever', :require => false
 
 # search
