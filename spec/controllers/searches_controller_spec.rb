@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe SearchesController do
   describe "GET #search" do
-    let(:request) { get :search, search: { query: 'lorem', filter: 'Question' } }
+    let(:request) { get :search, params: { search: { query: 'lorem', filter: 'Question' } } }
     it "returns http success" do
       request
       expect(response).to have_http_status(:success)

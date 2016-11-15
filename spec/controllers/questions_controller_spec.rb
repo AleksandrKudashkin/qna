@@ -6,9 +6,11 @@ describe QuestionsController do
   let(:question) { create(:question, user: user) }
   let(:another_question) { create(:question, user: other_user) }
   let(:answers) { create_list(:answer, 2, question: question, user: user) }
-  let(:vote_up_request) { proc { patch :vote_up, id: question, format: :json } }
-  let(:vote_down_request) { proc { patch :vote_down, id: question, format: :json } }
-  let(:cancel_vote_request) { proc { delete :cancel_vote, id: question, format: :json } }
+  let(:vote_up_request) { proc { patch :vote_up, params: { id: question, format: :json } } }
+  let(:vote_down_request) { proc { patch :vote_down, params: { id: question, format: :json } } }
+  let(:cancel_vote_request) do
+    proc { delete :cancel_vote, params: { id: question, format: :json } }
+  end
 
   before { sign_in(user) }
 
@@ -39,7 +41,7 @@ describe QuestionsController do
   end
 
   describe 'GET #show' do
-    before { get :show, id: question }
+    before { get :show, params: { id: question } }
 
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
@@ -55,7 +57,7 @@ describe QuestionsController do
   end
 
   describe 'POST #create' do
-    let(:create_request) { proc { |q| post :create, question: attributes_for(q) } }
+    let(:create_request) { proc { |q| post :create, params: { question: attributes_for(q) } } }
 
     context 'with valid object' do
       it_behaves_like "count changing", Question
@@ -83,7 +85,7 @@ describe QuestionsController do
   end
 
   describe 'DELETE #destroy' do
-    let(:delete_request) { proc { |q| delete :destroy, id: q } }
+    let(:delete_request) { proc { |q| delete :destroy, params: { id: q } } }
 
     it 'deletes the question of the user' do
       question
@@ -98,7 +100,7 @@ describe QuestionsController do
 
   describe 'PATCH #update' do
     let(:patch_request) do
-      proc { |attr, q = question| patch :update, id: q, question: attr, format: :js }
+      proc { |attr, q = question| patch :update, params: { id: q, question: attr, format: :js } }
     end
     let(:other_subject) { another_question }
     subject { question }
@@ -109,13 +111,13 @@ describe QuestionsController do
   describe 'PATCH #subscribe' do
     it 'creates a subscription' do
       expect do
-        patch :subscribe, id: another_question.id, format: :js
+        patch :subscribe, params: { id: another_question.id, format: :js }
       end.to change(another_question.subscribers, :count).by(1)
     end
 
     it 'does not changes subscriptions for author' do
       expect do
-        patch :subscribe, id: question.id, format: :js
+        patch :subscribe, params: { id: question.id, format: :js }
       end.to_not change(question.subscribers, :count)
     end
   end
@@ -123,7 +125,7 @@ describe QuestionsController do
   describe 'DELETE #unsubscribe' do
     it 'deletes a subscription' do
       expect do
-        delete :unsubscribe, id: question.id, format: :js
+        delete :unsubscribe, params: { id: question.id, format: :js }
       end.to change(question.subscriptions, :count).by(-1)
     end
   end

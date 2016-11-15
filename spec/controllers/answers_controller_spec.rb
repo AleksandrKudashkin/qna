@@ -7,13 +7,13 @@ describe AnswersController do
   let!(:answer) { create(:answer, question: question, user: user) }
   let!(:other_answer) { create(:answer, question: question, user: other_user, bestflag: true) }
   let(:vote_up_request) do
-    proc { patch :vote_up, id: answer, question_id: question.id, format: :json }
+    proc { patch :vote_up, params: { id: answer, question_id: question.id }, format: :json }
   end
   let(:vote_down_request) do
-    proc { patch :vote_down, id: answer, question_id: question.id, format: :json }
+    proc { patch :vote_down, params: { id: answer, question_id: question.id }, format: :json }
   end
   let(:cancel_vote_request) do
-    proc { delete :cancel_vote, id: answer, question_id: question.id, format: :json }
+    proc { delete :cancel_vote, params: { id: answer, question_id: question.id }, format: :json }
   end
 
   before { sign_in(user) }
@@ -21,7 +21,7 @@ describe AnswersController do
   describe 'POST #create' do
     let(:create_request) do
       proc do |a, q = question|
-        post :create, answer: attributes_for(a), question_id: q.id, format: :js
+        post :create, params: { answer: attributes_for(a), question_id: q.id }, format: :js
       end
     end
 
@@ -44,7 +44,7 @@ describe AnswersController do
 
   describe 'DELETE #destroy' do
     let(:delete_request) do
-      proc { |a| delete :destroy, id: a, question_id: question.id, format: :js }
+      proc { |a| delete :destroy, params: { id: a, question_id: question.id }, format: :js }
     end
 
     it 'deletes the answer of the user' do
@@ -59,7 +59,7 @@ describe AnswersController do
   describe 'PATCH #update' do
     let(:patch_request) do
       proc do |attr, a = answer, q = question|
-        patch :update, id: a, question_id: q.id, answer: attr, format: :js
+        patch :update, params: { id: a, question_id: q.id, answer: attr }, format: :js
       end
     end
     let(:other_subject) { other_answer }
@@ -77,7 +77,7 @@ describe AnswersController do
   it_behaves_like 'votable'
 
   describe 'PATCH #best' do
-    before { patch :best, id: answer.id, format: :js }
+    before { patch :best, params: { id: answer.id }, format: :js }
 
     it 'allows only one best answer' do
       answer.reload

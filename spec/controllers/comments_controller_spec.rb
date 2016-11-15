@@ -14,9 +14,11 @@ describe CommentsController do
       let(:create_request) do
         proc do |comment_attrs|
           post :create,
-               question_id: question,
-               commentable: 'questions',
-               comment: comment_attrs,
+               params: {
+                 question_id: question,
+                 commentable: 'questions',
+                 comment: comment_attrs
+               },
                format: :json
         end
       end
@@ -42,9 +44,11 @@ describe CommentsController do
       let(:create_request) do
         proc do |comment_attrs|
           post :create,
-               answer_id: answer,
-               commentable: 'answers',
-               comment: comment_attrs,
+               params: {
+                 answer_id: answer,
+                 commentable: 'answers',
+                 comment: comment_attrs
+               },
                format: :json
         end
       end

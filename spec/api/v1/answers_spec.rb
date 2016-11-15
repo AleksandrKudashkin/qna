@@ -22,7 +22,7 @@ describe 'Answers API' do
       subject { answer }
 
       before do
-        get "/api/v1/answers/#{answer.id}", access_token: access_token.token
+        get "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token }
       end
 
       it_behaves_like "Successful response"
@@ -45,7 +45,7 @@ describe 'Answers API' do
     end
 
     def do_request(options = {})
-      get "/api/v1/answers/#{answer.id}", options
+      get "/api/v1/answers/#{answer.id}", params: options
     end
   end
 
@@ -58,9 +58,11 @@ describe 'Answers API' do
       let(:create_request) do
         proc do |a|
           post "/api/v1/questions/#{question.id}/answers",
-               question: question,
-               answer: attributes_for(a),
-               access_token: access_token.token
+               params: {
+                 question: question,
+                 answer: attributes_for(a),
+                 access_token: access_token.token
+               }
         end
       end
 
@@ -80,7 +82,7 @@ describe 'Answers API' do
 
     def do_request(options = {})
       post "/api/v1/questions/#{question.id}/answers",
-           { question: question, answer: attributes_for(:answer) }.merge(options)
+           params: { question: question, answer: attributes_for(:answer) }.merge(options)
     end
   end
 end

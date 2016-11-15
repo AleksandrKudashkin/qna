@@ -13,7 +13,7 @@ describe 'Questions API' do
       subject { question }
       let(:prefix) { 'questions/0/' }
 
-      before { get '/api/v1/questions', access_token: access_token.token }
+      before { get '/api/v1/questions', params: { access_token: access_token.token } }
 
       it_behaves_like "Successful response"
       it_behaves_like "Including attributes", %w(id title body created_at updated_at user_id)
@@ -35,7 +35,7 @@ describe 'Questions API' do
     end
 
     def do_request(options = {})
-      get '/api/v1/questions', options
+      get '/api/v1/questions', params: options
     end
   end
 
@@ -59,7 +59,7 @@ describe 'Questions API' do
       let(:prefix) { 'question/' }
 
       before do
-        get "/api/v1/questions/#{question.id}", access_token: access_token.token
+        get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }
       end
 
       it_behaves_like "Successful response"
@@ -83,7 +83,7 @@ describe 'Questions API' do
     end
 
     def do_request(options = {})
-      get "/api/v1/questions/#{question.id}", options
+      get "/api/v1/questions/#{question.id}", params: options
     end
   end
 
@@ -102,7 +102,7 @@ describe 'Questions API' do
       let(:prefix) { 'answers/0/' }
 
       before do
-        get "/api/v1/questions/#{question.id}/answers", access_token: access_token.token
+        get "/api/v1/questions/#{question.id}/answers", params: { access_token: access_token.token }
       end
 
       it_behaves_like "Successful response"
@@ -111,7 +111,7 @@ describe 'Questions API' do
     end
 
     def do_request(options = {})
-      get "/api/v1/questions/#{question.id}/answers", options
+      get "/api/v1/questions/#{question.id}/answers", params: options
     end
   end
 
@@ -122,7 +122,11 @@ describe 'Questions API' do
       let(:access_token) { create(:access_token) }
       let(:create_request) do
         proc do |q|
-          post '/api/v1/questions', question: attributes_for(q), access_token: access_token.token
+          post '/api/v1/questions', params:
+            {
+              question: attributes_for(q),
+              access_token: access_token.token
+            }
         end
       end
 
@@ -138,7 +142,7 @@ describe 'Questions API' do
     end
 
     def do_request(options = {})
-      post '/api/v1/questions', { question: attributes_for(:question) }.merge(options)
+      post '/api/v1/questions', params: { question: attributes_for(:question) }.merge(options)
     end
   end
 end

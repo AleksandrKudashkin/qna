@@ -8,7 +8,7 @@ describe 'Profile API' do
     it_behaves_like "API Authenticable"
 
     context 'authorized' do
-      before { get '/api/v1/profiles/me', access_token: access_token.token }
+      before { get '/api/v1/profiles/me', params: { access_token: access_token.token } }
       let(:prefix) { '' }
       subject { me }
 
@@ -18,7 +18,7 @@ describe 'Profile API' do
     end
 
     def do_request(options = {})
-      get '/api/v1/profiles/me', options
+      get '/api/v1/profiles/me', params: options
     end
   end
 
@@ -28,7 +28,7 @@ describe 'Profile API' do
     context 'authorized' do
       let!(:users) { create_list(:user, 3) }
 
-      before { get '/api/v1/profiles', access_token: access_token.token }
+      before { get '/api/v1/profiles', params: { access_token: access_token.token } }
 
       it_behaves_like "Successful response"
 
@@ -47,7 +47,7 @@ describe 'Profile API' do
     end
 
     def do_request(options = {})
-      get '/api/v1/profiles', options
+      get '/api/v1/profiles', params: options
     end
   end
 end

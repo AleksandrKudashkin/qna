@@ -17,25 +17,25 @@ RSpec.describe AttachmentsController, type: :controller do
   describe 'DELETE #destroy' do
     it 'deletes the attachment of the question' do
       expect do
-        delete :destroy, id: f_attachment, format: :js
+        delete :destroy, params: { id: f_attachment }, format: :js
       end.to change(f_question.attachments, :count).by(-1)
     end
 
     it 'renders destroy js template' do
-      delete :destroy, id: f_attachment, format: :js
+      delete :destroy, params: { id: f_attachment }, format: :js
       expect(response).to render_template :destroy
     end
 
     it 'not deletes the files of the other user' do
       expect do
-        delete :destroy, id: f2_attachment, format: :js
+        delete :destroy, params: { id: f2_attachment }, format: :js
       end.to_not change(f_question.attachments, :count)
     end
 
     it 'deletes the file of the answer' do
       sign_in(f2_user)
       expect do
-        delete :destroy, id: answer_file, format: :js
+        delete :destroy, params: { id: answer_file }, format: :js
       end.to change(answer.attachments, :count).by(-1)
     end
   end
