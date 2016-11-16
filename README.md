@@ -22,7 +22,7 @@ A class project at online school for rails developers [Thinknetica.com](http://w
 
 ---
 ### Technical details
-* **Ruby 2.2.5** and **Rails 4.2.7**
+* **Ruby 2.3.2** and **Rails 5**
 * **PostgreSQL 9.3**
 * **Sphinx 2.0.4** as a search engine
 * **Doorkeeper**: OAuth provider, REST API
@@ -45,5 +45,5 @@ A class project at online school for rails developers [Thinknetica.com](http://w
 
 ---
 #### Future plans
-I'm planning to upgrade to **Rails 5** and change **PrivatePub** to **ActionCable**.
-Also I'd like to switch to **Pundit** for Authorization.
+I'm planning to change **PrivatePub** to **ActionCable** in a couple of weeks.  
+Also I'm willing to try **Pundit** for Authorization.
