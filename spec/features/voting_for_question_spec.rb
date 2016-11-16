@@ -60,7 +60,7 @@ feature 'Voting for question', %q(
     scenario 'The other user cancels his vote for the question', js: true do
       visit question_path(question)
       click_on 'q-vote-up'
-      links_test
+      links_test(false)
       expect(page).to have_selector :link_or_button, 'q-cancel-vote'
 
       click_on 'q-cancel-vote'

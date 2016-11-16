@@ -4,7 +4,7 @@ class Answer < ApplicationRecord
 
   belongs_to :question, touch: true
   belongs_to :user
-  has_many :attachments, dependent: :destroy, as: :attachable
+  has_many :attachments, dependent: :destroy, as: :attachable, inverse_of: :attachable
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
