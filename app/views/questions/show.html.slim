@@ -4,9 +4,8 @@
   .row
     .col-md-1
     .col-md-11
-      - if @question.comments.any? || user_signed_in?
-        em Comments:
-        hr
+      em Comments:
+      hr
       .q-comments data={question_id: "#{@question.id}"}
         = render 'comments/comment', commentable: @question
       .q-comments-errors
