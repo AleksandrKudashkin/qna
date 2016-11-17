@@ -38,12 +38,11 @@
           em Attachments:
         ul
           - @question.attachments.each do |a|
-            - cache a do
-              li id="file-#{a.id}"
-                = link_to(a.file.identifier, a.file.url)
-                |&nbsp;&nbsp;&nbsp;
-                = link_to('delete', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-xs btn-danger', 
-                  remote: true) if can?(:destroy, a) 
+            li id="file-#{a.id}"
+              = link_to(a.file.identifier, a.file.url)
+              |&nbsp;&nbsp;&nbsp;
+              = link_to('delete', a, method: :delete, id: "delete-file-#{a.id}", class: 'btn btn-xs btn-danger', 
+                remote: true) if can?(:destroy, a) 
 
       - if can?(:update, @question) && can?(:destroy, @question)
           => link_to "Edit", '', class: 'btn btn-xs btn-warning edit-question-link', data: { question_id: @question.id }
