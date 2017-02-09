@@ -22,7 +22,7 @@ A class project at online school for rails developers [Thinknetica.com](http://w
 
 ---
 ### Technical details
-* **Ruby 2.3.2** and **Rails 5**
+* **Ruby 2.3.3** and **Rails 5**
 * **PostgreSQL 9.3**
 * **Sphinx 2.0.4** as a search engine
 * **Doorkeeper**: OAuth provider, REST API
