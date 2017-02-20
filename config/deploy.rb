@@ -26,8 +26,7 @@ append :linked_dirs,
        'public/system',
        'vendor/bundle',
        'public/uploads',
-       'db/sphinx',
-       'app/indices'
+       'db/sphinx'
 # 'bin'
 
 namespace :deploy do
