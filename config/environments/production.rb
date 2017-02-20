@@ -85,12 +85,12 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   
   # SendGrid
-  config.action_mailer.default_url_options = { host: 'kudashkin.pro' }
+  config.action_mailer.default_url_options = { host: 'qna.kudashkin.pro' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     user_name: ENV['SENDGRID_USERNAME'],
     password: ENV['SENDGRID_PASSWORD'],
-    domain: 'kudashkin.pro',
+    domain: 'qna.kudashkin.pro',
     address: 'smtp.sendgrid.net',
     port: 587,
     authentication: :plain,
