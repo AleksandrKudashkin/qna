@@ -67,7 +67,7 @@ gem 'redis-rails'
 group :development do
   gem 'spring'
   gem 'spring-commands-rspec'
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 4.0'
   gem 'letter_opener'
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
