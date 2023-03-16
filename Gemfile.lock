@@ -189,7 +189,6 @@ GEM
     jquery-turbolinks (2.1.0)
       railties (>= 3.1.0)
       turbolinks
-    json (1.8.6)
     json_spec (1.1.5)
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
@@ -265,6 +264,8 @@ GEM
       websocket-driver (>= 0.2.0)
     private_pub (1.0.3)
       faye
+    psych (5.1.0)
+      stringio
     public_suffix (4.0.7)
     racc (1.6.0)
     rack (2.2.4)
@@ -306,7 +307,8 @@ GEM
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdoc (4.3.0)
+    rdoc (6.5.0)
+      psych (>= 4.0.0)
     redis (4.7.1)
     redis-actionpack (5.3.0)
       actionpack (>= 5, < 8)
@@ -367,9 +369,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    sdoc (0.4.2)
-      json (~> 1.7, >= 1.7.7)
-      rdoc (~> 4.0)
+    sdoc (2.6.1)
+      rdoc (>= 5.0)
     shoulda-matchers (4.5.1)
       activesupport (>= 4.2.0)
     sidekiq (6.5.1)
@@ -398,6 +399,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     ssrf_filter (1.0.7)
+    stringio (3.0.5)
     temple (0.8.2)
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
@@ -495,7 +497,7 @@ DEPENDENCIES
   responders
   rspec-rails
   sass-rails (~> 5.0)
-  sdoc (~> 0.4.0)
+  sdoc (~> 2.6.0)
   shoulda-matchers
   sidekiq
   sinatra
