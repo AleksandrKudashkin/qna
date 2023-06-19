@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 # main
 ruby '2.7.6'
-gem 'rails', '~> 5.0'
+gem 'rails', '~> 7.0'
 gem 'pg'
 
 # front-end
