@@ -267,8 +267,8 @@ GEM
       faye
     public_suffix (4.0.7)
     racc (1.6.0)
-    rack (2.2.4)
-    rack-protection (2.2.2)
+    rack (2.2.8)
+    rack-protection (2.2.4)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -376,10 +376,10 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
-    sinatra (2.2.2)
+    sinatra (2.2.4)
       mustermann (~> 2.0)
       rack (~> 2.2)
-      rack-protection (= 2.2.2)
+      rack-protection (= 2.2.4)
       tilt (~> 2.0)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
